@@ -151,10 +151,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ListTape.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Tape.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ListTape.h" />
     <ClInclude Include="Tape.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

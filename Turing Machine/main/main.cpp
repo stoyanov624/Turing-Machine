@@ -1,14 +1,16 @@
 #include <iostream>
 #include "Tape.h"
-
+#include "ListTape.h"
+#include <list>
+#include <algorithm>
 int main()
 {
-   
-	Tape tape;
-	tape.move_right();
-	tape.move_right();
-	tape.move_right();
-	tape.showTape();
+	ListTape t1("1234");
+	t1.move_right();
+	t1.move_right();
+	t1.move_right();
+	t1.show_tape();
+
 	
 
 	
