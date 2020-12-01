@@ -1,60 +1,78 @@
 #include "Tape.h"
 
 Tape::Tape() {
-	current = '_';
+	head = new Cell{ '_',nullptr,nullptr };
+	current = head;
+	last = head;
 }
 
-Tape::Tape(const std::string& input) {
-	unsigned input_lenght = input.length();
+Tape::Tape(const std::string& input) : Tape() {
 
-	for (unsigned i = 0; i < input_lenght; i++) {
-		right.push_back(input[input_lenght - i - 1]);
+	unsigned input_len = input.length();
+	for (unsigned i = 0; i < input_len; i++) {
+		push_back(input[i]);
 	}
 
-	current = right.back();
-	right.pop_back();
+	if (input_len > 0) {
+		current = head->right;
+	}
+}
+
+void Tape::push_back(const char element) {
+	Cell* temp = new Cell{ element,last,nullptr };
+	last->right = temp;
+	last = temp;
+	current = temp;
+}
+
+void Tape::push_front(const char element) {
+	Cell* temp = new Cell{ element,nullptr,head };
+	head->left = temp;
+	head = temp;
+	current = temp;
+}
+
+void Tape::show_tape() const {
+	Cell* crr = head;
+	std::cout << '[';
+	while (crr != nullptr) {
+		if (crr == current) {
+			std::cout << '{' << crr->data << '}';
+		}
+		else {
+			std::cout << crr->data;
+		}
+
+		if (crr->right != nullptr) {
+			std::cout << ' ';
+		}
+		crr = crr->right;
+	}
+	std::cout << ']';
+	std::cout << std::endl;
 }
 
 void Tape::move_right() {
-	if (right.empty()) {
-		right.push_back('_');
+	if (current->right == nullptr) {
+		push_back('_');
+		return;
 	}
-	left.push_back(current);
-	current = right.back();
-	right.pop_back();
+	current = current->right;
 }
 
 void Tape::move_left() {
-	if (left.empty()) {
-		left.push_back('_');
+	if (current->left == nullptr) {
+		push_front('_');
+		return;
 	}
-	right.push_back(current);
-	current = left.back();
-	left.pop_back();
+	current = current->left;
 }
 
-void Tape::write(char symbol) {
-	current = symbol;
+void Tape::write(const char symbol) {
+	current->data = symbol;
 }
 
 const char Tape::read() const {
-	return current;
+	return current->data;
 }
 
-void Tape::showTape()  {
-
-	std::cout << "[";
-	for (auto element : left) {
-		std::cout << element << " ";
-	}
-
-	std::cout << "{";
-	std::cout << current;
-	std::cout << "}";
-
-	for (std::vector<char>::reverse_iterator it = right.rbegin(); it != right.rend(); it++) {
-		std::cout << *it << " ";
-	}
-
-	std::cout << "]\n";
-}
