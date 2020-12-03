@@ -15,7 +15,6 @@ public:
 	void push_front(const T&);
 	void pop_back();
 	void pop_front();
-
 	void printList() const;
 
 private:
@@ -29,37 +28,22 @@ private:
 	void erase();
 	
 public:
-		class Iterator {
-			Cell* current;
-		public:
-			Iterator() : current(nullptr) {}
-			Iterator(Cell* current) {
-				this->current = current;
-			}
-
-			void operator++() {
-				current = current->right;
-			}
-			void operator--() {
-				current = current->left;
-			}
-			T& operator*() {
-				return current->data;
-			}
-			bool operator != (const Iterator& other) {
-				return this->current != other.current;
-			}
-			bool operator == (const Iterator& other) {
-				return this->current == other.current;
-			}
-		};
+	class Iterator {
+		Cell* current;
+	public:
+		Iterator();
+		Iterator(Cell* current);
+		bool isLast();
+		bool isFirst();
+		void operator++();
+		void operator--();
+		T& operator*();
+		bool operator != (const Iterator& other);
+		bool operator == (const Iterator& other);
+	};
 public:
-	Iterator begin() {
-		return Iterator(head);
-	}
-	Iterator end() {
-		return Iterator(nullptr);
-	}
+	Iterator begin();
+	Iterator end();
 };
 
 template <class T>
@@ -177,4 +161,59 @@ void DLList<T>::printList() const {
 	}
 
 	std::cout << std::endl;
+}
+
+template <class T>
+DLList<T>::Iterator::Iterator() {
+	current = nullptr;
+}
+
+template <class T>
+DLList<T>::Iterator::Iterator(Cell* _current) {
+	current = _current;
+}
+
+template <class T>
+bool DLList<T>::Iterator::isFirst() {
+	return current->left == nullptr;
+}
+
+template <class T>
+bool DLList<T>::Iterator::isLast() {
+	return current->right == nullptr;
+}
+
+template <class T>
+void DLList<T>::Iterator::operator++() {
+	current = current->right;
+}
+
+template <class T>
+void DLList<T>::Iterator::operator--() {
+	current = current->left;
+}
+
+template <class T>
+T& DLList<T>::Iterator::operator*() {
+	return current->data;
+}
+
+template <class T>
+bool DLList<T>::Iterator::operator != (const Iterator& other) {
+	return this->current != other.current;
+}
+
+template <class T>
+bool DLList<T>::Iterator::operator == (const Iterator& other) {
+	return this->current == other.current;
+}
+
+template <class T>
+typename DLList<T>::Iterator DLList<T>::begin() {
+	return Iterator(head);
+}
+
+template <class T>
+typename DLList<T>::Iterator DLList<T>::end() {
+	return Iterator(nullptr);
 }

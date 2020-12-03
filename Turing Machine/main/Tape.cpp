@@ -1,14 +1,14 @@
 #include "Tape.h"
 
 Tape::Tape() {
-	tape.push_back(' ');
+	tape.push_back('_');
 	current = tape.begin();
 }
 
 Tape::Tape(const std::string& input) {
 	unsigned length = input.length();
 	if (length == 0) {
-		tape.push_back(' ');
+		tape.push_back('_');
 	}
 	else {
 		for (unsigned i = 0; i < length; i++) {
@@ -33,15 +33,36 @@ void Tape::show_tape() {
 }
 
 void Tape::move_right() {
-	if (current == nullptr) {
+	if (current.isFirst() && current.isLast() && *current == '_') {
+		return;
+	}
+
+	if (current.isLast()) {
 		tape.push_back('_');
 	}
+
+	if (current.isFirst() && *current == '_') {
+		++current;
+		tape.pop_front();
+		return;
+	}
+
 	++current;
 }
 
 void Tape::move_left() {
-	if (current == tape.begin()) {
+	if (current.isFirst() && current.isLast() && *current == '_') {
+		return;
+	}
+
+	if (current.isFirst()) {
 		tape.push_front('_');
+	}
+
+	if (current.isLast() && *current == '_') {
+		--current;
+		tape.pop_back();
+		return;
 	}
 	--current;
 }
