@@ -1,17 +1,12 @@
 #include <iostream>
 #include "Tape.h"
-#include "ListTape.h"
-#include <list>
-#include <algorithm>
+#include "DLList.h"
+
 int main()
 {
-	ListTape t1("1234");
-	t1.move_right();
-	t1.move_right();
-	t1.move_right();
+	Tape t1("12");
+	t1.move_left();
+	t1.move_left();
+	
 	t1.show_tape();
-
-	
-
-	
 }

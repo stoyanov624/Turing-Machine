@@ -32,5 +32,8 @@
     <ClInclude Include="Tape.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DLList.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

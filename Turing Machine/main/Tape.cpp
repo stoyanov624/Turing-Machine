@@ -1,78 +1,56 @@
 #include "Tape.h"
 
 Tape::Tape() {
-	head = new Cell{ '_',nullptr,nullptr };
-	current = head;
-	last = head;
+	tape.push_back(' ');
+	current = tape.begin();
 }
 
-Tape::Tape(const std::string& input) : Tape() {
-
-	unsigned input_len = input.length();
-	for (unsigned i = 0; i < input_len; i++) {
-		push_back(input[i]);
+Tape::Tape(const std::string& input) {
+	unsigned length = input.length();
+	if (length == 0) {
+		tape.push_back(' ');
 	}
-
-	if (input_len > 0) {
-		current = head->right;
+	else {
+		for (unsigned i = 0; i < length; i++) {
+			tape.push_back(input[i]);
+		}
 	}
+	current = tape.begin();
 }
 
-void Tape::push_back(const char element) {
-	Cell* temp = new Cell{ element,last,nullptr };
-	last->right = temp;
-	last = temp;
-	current = temp;
-}
 
-void Tape::push_front(const char element) {
-	Cell* temp = new Cell{ element,nullptr,head };
-	head->left = temp;
-	head = temp;
-	current = temp;
-}
-
-void Tape::show_tape() const {
-	Cell* crr = head;
+void Tape::show_tape() {
 	std::cout << '[';
-	while (crr != nullptr) {
-		if (crr == current) {
-			std::cout << '{' << crr->data << '}';
+	for (DLList<char>::Iterator cell = tape.begin(); cell != tape.end(); ++cell) {
+		if (cell == current) {
+			std::cout << "{" << *cell << "} ";
 		}
 		else {
-			std::cout << crr->data;
+			std::cout << *cell << " ";
 		}
-
-		if (crr->right != nullptr) {
-			std::cout << ' ';
-		}
-		crr = crr->right;
 	}
-	std::cout << ']';
-	std::cout << std::endl;
+	std::cout << "\b]\n";
 }
 
 void Tape::move_right() {
-	if (current->right == nullptr) {
-		push_back('_');
-		return;
+	if (current == nullptr) {
+		tape.push_back('_');
 	}
-	current = current->right;
+	++current;
 }
 
 void Tape::move_left() {
-	if (current->left == nullptr) {
-		push_front('_');
-		return;
+	if (current == tape.begin()) {
+		tape.push_front('_');
 	}
-	current = current->left;
+	--current;
 }
 
 void Tape::write(const char symbol) {
-	current->data = symbol;
+	*current = symbol;
 }
 
-const char Tape::read() const {
-	return current->data;
+const char Tape::read() { 
+	return *current;
 }
 
