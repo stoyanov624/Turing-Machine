@@ -89,7 +89,7 @@ DLList<T>::DLList(const DLList& other_list) {
 
 template <class T>
 DLList<T>& DLList<T>::operator=(const DLList& other_list) {
-	if (*this != other_list) {
+	if (this != &other_list) {
 		erase();
 		copy(other_list);
 	}

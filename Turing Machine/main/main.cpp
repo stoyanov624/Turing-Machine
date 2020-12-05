@@ -1,38 +1,25 @@
 #include <iostream>
-#include "Tape.h"
-#include "DLList.h"
-#include <map>
-#include "Transition.h"
+#include "TuringMachine.h"
 
-
-void go_to_next_transition(Transition*& current, std::map<std::string, std::vector<std::pair<Transition*, char>>> graph) {
-
-	for(auto t : graph[current->getCurrentTransition()]) {
-		if (current->getCurrentCell() == t.second) {
-			current = t.first;
-			return;
-		}
-	}
-}
 
 int main()
 {
-	Transition t1("t1", '1', '0', 'L', "t2");
-	Transition t2("t2", '0', '0', 'R', "t3");
-	Transition t3("t3", '0', '0', 'R', "t2");
-	Transition halt("halt", ' ', ' ', ' ', "");
-
-	std::map<std::string, std::vector<std::pair<Transition*, char>>> graph;
-	Transition* current = &t1;
-	graph["t1"].push_back(std::make_pair(&t2, '0'));
-	graph["t1"].push_back(std::make_pair(&t3, '1'));
-	graph["t2"].push_back(std::make_pair(&t3, '1'));
-	graph["t3"].push_back(std::make_pair(&halt, '0'));
+	Tape tape("11111111");
+	tape.move_right();
+	tape.move_right();
+	tape.move_right();
+	tape.move_right();
 	
-	go_to_next_transition(current, graph);
-	go_to_next_transition(current, graph);
 
-	std::cout << current->getCurrentTransition();
+	std::map<std::string, std::vector<Transition*>> instructions;
+	instructions["start"].push_back(new Transition("q1", '1', '0', 'L', "q2"));
+	instructions["start"].push_back(new Transition("halt", '0', '0', ' ', ""));
+	instructions["q1"].push_back(new Transition("q1", '1', '0', 'L', "q1"));
+	instructions["q1"].push_back(new Transition("q2", '0', '1', ' ', "start"));
+	instructions["q2"].push_back(new Transition("start", '0', '0', 'L', "halt"));
+	instructions["q2"].push_back(new Transition("start", '1', '1', 'R', "halt"));
 
 	
+	TuringMachine turing_m(&tape,instructions);
+	turing_m.runMachine();
 }

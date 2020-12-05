@@ -18,7 +18,6 @@ Tape::Tape(const std::string& input) {
 	current = tape.begin();
 }
 
-
 void Tape::show_tape() {
 	std::cout << '[';
 	for (DLList<char>::Iterator cell = tape.begin(); cell != tape.end(); ++cell) {
