@@ -74,3 +74,40 @@ const char Tape::read() {
 	return *current;
 }
 
+void Tape::saveTape(std::ofstream& out) {
+	for (DLList<char>::Iterator it = tape.begin(); it != tape.end(); ++it)
+	{
+		if (it == current) {
+			out << "{" << *it << "}";
+			continue;
+		}
+		out << *it;
+	}
+}
+
+void Tape::deserializer(const std::string& input) {
+	unsigned length = input.length();
+	std::cout << input << std::endl;
+	bool stop_current = false;
+	for (unsigned i = 0; i < length; i++) {
+		if (input[i] == '{' || input[i] == '}') {
+			if (input[i] == '}') {
+				stop_current = true;
+			}
+			continue;
+		}
+
+		tape.push_back(input[i]);
+		if (!stop_current) {
+			++current;
+		}
+		
+	}
+}
+
+void Tape::loadTape(std::ifstream& in) {
+	std::string input;
+	std::getline(in, input);
+	deserializer(input);
+}
+

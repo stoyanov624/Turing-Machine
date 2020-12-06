@@ -14,11 +14,14 @@ TuringMachine::TuringMachine(Tape* other_tm_tape,
 void TuringMachine::goToNextTransition() {
 	for (auto t : instructions[current_state]) {
 		if (t->getCurrentCell() == tape->read()) {
-			std::cout << "Current cell is " << tape->read() 
+
+			std::cout << "Current cell is " << t->getCurrentCell()
 					  << " soo change it to " << t->getChangeCell() 
 				      << " and move head to " << t->getMoveDirection() 
 				      << "\n";
+
 			tape->write(t->getChangeCell());
+
 			switch (t->getMoveDirection()) {
 			case 'R':
 				tape->move_right();
@@ -35,20 +38,85 @@ void TuringMachine::goToNextTransition() {
 			return;
 		}
 	}
-	std::cout << "Invalid instructions!\n";
-	current_state = "";
+	std::cout << "REJECTED!\n";
+	current_state = "reject";
+}
+
+void TuringMachine::saveInstructions(std::ofstream& out) {
+	for (std::map<std::string, std::vector<Transition*>>::reverse_iterator key = instructions.rbegin(); key != instructions.rend(); ++key) {
+		for (auto value : key->second) {
+			out << value->getCurrentCell();
+			out << "{";
+			out << key->first;
+			out << "}";
+			out << " -> ";
+			out << value->getChangeCell();
+			out << "{";
+			out << value->getCurrentTransition();
+			out << "}";
+			out << value->getMoveDirection();
+			out << "\n";
+		}
+	}
+}
+
+void TuringMachine::instructionDeserializer(const std::string& input) {
+	unsigned length = input.length();
+	char current_cell = input[0];
+	char change_cell = ' ';
+	char direction_command = input[length - 1];
+	std::string current_state = "";
+	std::string transition_state = "";
+	bool current_state_not_taken = true;
+
+	for (int i = 1; i < length - 1; i++) {
+		if (input[i - 1] == '{' && current_state.empty()) {
+			while (input[i] != '}') {
+				current_state += input[i];
+				i++;
+			}
+		}
+
+		if (change_cell == ' ' && !current_state.empty()) {
+			i += 5;
+			change_cell = input[i];
+		}
+
+		if (input[i - 1] == '{' && transition_state.empty()) {
+			while (input[i] != '}') {
+				transition_state += input[i];
+				i++;
+			}
+		}
+	}
+
+	addTransition(current_state, new Transition(transition_state, current_cell, change_cell, direction_command, ""));
+}
+
+void TuringMachine::loadInstructions(std::ifstream& in) {
+	std::string input;
+
+	while (std::getline(in, input)) {
+		instructionDeserializer(input);
+	}
 }
 
 void TuringMachine::runMachine() {
-	printTape();
-	while(current_state != "halt" && current_state != "") {
+	tape->show_tape();
+	while(current_state != "halt" && current_state != "reject") {
 		goToNextTransition();
 	}
-	printTape();
+	if (current_state == "halt") {
+		std::cout << "HALTED!\n";
+	}
 }
 
-void TuringMachine::addTransition(Transition* transition) {
-	instructions[current_state].push_back(transition);
+void TuringMachine::addTransition(const std::string& key_to_transition, Transition* transition) {
+	instructions[key_to_transition].push_back(transition);
+}
+
+void TuringMachine::addTape(Tape* _tape) {
+	tape = _tape;
 }
 
 void TuringMachine::printTape() {

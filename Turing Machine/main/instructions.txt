@@ -1,0 +1,4 @@
+1{start} -> 0{q1}L
+0{start} -> 0{halt}H
+1{q1} -> 0{q1}L
+_{q1} -> 0{start}H
