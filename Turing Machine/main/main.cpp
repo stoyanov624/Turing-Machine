@@ -10,11 +10,21 @@ int main()
 	tape.move_right();
 	tape.move_right();
 
-	TuringMachine turing_m;
-	turing_m.addTape(&tape);
+	std::map<std::string, std::vector<Transition>> instructions;
+	instructions["start"].push_back(Transition("q1", '1', '0', 'L'));
+	instructions["start"].push_back(Transition("halt", '0', '0', ' '));
+	instructions["q1"].push_back(Transition("q1", '1', '0', 'L'));
+	instructions["q1"].push_back(Transition("q2", '0', '1', ' '));
+	instructions["q2"].push_back(Transition("start", '0', '0', 'L'));
+	instructions["q2"].push_back(Transition("start", '1', '1', 'R'));
 
-	std::ifstream fileIn("instructions.txt");
 
-	turing_m.loadInstructions(fileIn);
-	turing_m.runMachine();
+	TuringMachine turing_m(tape, instructions);
+	//turing_m.runMachine();
+	turing_m.printTape();
+
+	//TuringMachine tm;
+	//std::ifstream inFile("machine.txt");
+	//tm.loadMachine(inFile);
+	
 }

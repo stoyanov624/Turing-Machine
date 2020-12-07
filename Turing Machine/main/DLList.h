@@ -37,7 +37,7 @@ public:
 		bool isFirst();
 		void operator++();
 		void operator--();
-		T& operator*();
+		T& operator*() const;
 		bool operator != (const Iterator& other);
 		bool operator == (const Iterator& other);
 	};
@@ -194,7 +194,7 @@ void DLList<T>::Iterator::operator--() {
 }
 
 template <class T>
-T& DLList<T>::Iterator::operator*() {
+T& DLList<T>::Iterator::operator*() const {
 	return current->data;
 }
 

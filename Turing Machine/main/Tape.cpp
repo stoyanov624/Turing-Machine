@@ -18,6 +18,19 @@ Tape::Tape(const std::string& input) {
 	current = tape.begin();
 }
 
+Tape& Tape::operator=(Tape& other_tape) {
+	tape = other_tape.tape;
+	current = tape.begin();
+
+	for (DLList<char>::Iterator it = other_tape.tape.begin(); it != other_tape.tape.end(); ++it,++current) {
+		if (it == other_tape.current) {
+			break;
+		}
+	}
+	
+	return *this;
+}
+
 void Tape::show_tape() {
 	std::cout << '[';
 	for (DLList<char>::Iterator cell = tape.begin(); cell != tape.end(); ++cell) {
@@ -70,7 +83,7 @@ void Tape::write(const char symbol) {
 	*current = symbol;
 }
 
-const char Tape::read() { 
+const char Tape::read() const { 
 	return *current;
 }
 
@@ -83,11 +96,11 @@ void Tape::saveTape(std::ofstream& out) {
 		}
 		out << *it;
 	}
+	out << "\n";
 }
 
 void Tape::deserializer(const std::string& input) {
 	unsigned length = input.length();
-	std::cout << input << std::endl;
 	bool stop_current = false;
 	for (unsigned i = 0; i < length; i++) {
 		if (input[i] == '{' || input[i] == '}') {

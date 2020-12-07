@@ -4,8 +4,8 @@ TuringMachine::TuringMachine() {
 	current_state = "start";
 }
 
-TuringMachine::TuringMachine(Tape* other_tm_tape, 
-							 const std::map<std::string, std::vector<Transition*>>& other_instructions) {
+TuringMachine::TuringMachine(Tape& other_tm_tape, 
+							 const std::map<std::string, std::vector<Transition>>& other_instructions) {
 	tape = other_tm_tape;
 	current_state = "start";
 	instructions = other_instructions;
@@ -13,28 +13,29 @@ TuringMachine::TuringMachine(Tape* other_tm_tape,
 
 void TuringMachine::goToNextTransition() {
 	for (auto t : instructions[current_state]) {
-		if (t->getCurrentCell() == tape->read()) {
+		if (t.getCurrentCell() == tape.read()) {
 
-			std::cout << "Current cell is " << t->getCurrentCell()
-					  << " soo change it to " << t->getChangeCell() 
-				      << " and move head to " << t->getMoveDirection() 
-				      << "\n";
+			std::cout << "Current cell is " << t.getCurrentCell()
+					  << " soo change it to " << t.getChangeCell();
 
-			tape->write(t->getChangeCell());
+			tape.write(t.getChangeCell());
 
-			switch (t->getMoveDirection()) {
+			switch (t.getMoveDirection()) {
 			case 'R':
-				tape->move_right();
+				std::cout << " and move head to the right!\n";
+				tape.move_right();
 				break;
 			case 'L':
-				tape->move_left();
+				std::cout << " and move head to the left!\n";
+				tape.move_left();
 				break;
 			default:
+				std::cout << " and don't move the head!\n";
 				break;
 			}
-			current_state = t->getCurrentTransition();
+			current_state = t.getCurrentTransition();
 			
-			tape->show_tape();
+			tape.show_tape();
 			return;
 		}
 	}
@@ -43,19 +44,10 @@ void TuringMachine::goToNextTransition() {
 }
 
 void TuringMachine::saveInstructions(std::ofstream& out) {
-	for (std::map<std::string, std::vector<Transition*>>::reverse_iterator key = instructions.rbegin(); key != instructions.rend(); ++key) {
+	for (std::map<std::string, std::vector<Transition>>::reverse_iterator key = instructions.rbegin(); key != instructions.rend(); ++key) {
 		for (auto value : key->second) {
-			out << value->getCurrentCell();
-			out << "{";
-			out << key->first;
-			out << "}";
-			out << " -> ";
-			out << value->getChangeCell();
-			out << "{";
-			out << value->getCurrentTransition();
-			out << "}";
-			out << value->getMoveDirection();
-			out << "\n";
+			out << value.getCurrentCell() << "{" << key->first << "}" << " -> " << value.getChangeCell() << "{" 
+				<< value.getCurrentTransition() << "}" << value.getMoveDirection() << "\n";
 		}
 	}
 }
@@ -69,7 +61,7 @@ void TuringMachine::instructionDeserializer(const std::string& input) {
 	std::string transition_state = "";
 	bool current_state_not_taken = true;
 
-	for (int i = 1; i < length - 1; i++) {
+	for (unsigned i = 1; i < length - 1; i++) {
 		if (input[i - 1] == '{' && current_state.empty()) {
 			while (input[i] != '}') {
 				current_state += input[i];
@@ -90,7 +82,21 @@ void TuringMachine::instructionDeserializer(const std::string& input) {
 		}
 	}
 
-	addTransition(current_state, new Transition(transition_state, current_cell, change_cell, direction_command, ""));
+	addTransition(current_state, Transition(transition_state, current_cell, change_cell, direction_command));
+}
+
+void TuringMachine::saveMachine(std::ofstream& out) {
+	tape.saveTape(out);
+	out << current_state << "\n";
+	saveInstructions(out);
+}
+
+void TuringMachine::loadMachine(std::ifstream& in) {
+	std::string input;
+	tape.loadTape(in);
+	std::getline(in, input);
+	current_state = input;
+	loadInstructions(in);
 }
 
 void TuringMachine::loadInstructions(std::ifstream& in) {
@@ -102,7 +108,7 @@ void TuringMachine::loadInstructions(std::ifstream& in) {
 }
 
 void TuringMachine::runMachine() {
-	tape->show_tape();
+	tape.show_tape();
 	while(current_state != "halt" && current_state != "reject") {
 		goToNextTransition();
 	}
@@ -111,14 +117,14 @@ void TuringMachine::runMachine() {
 	}
 }
 
-void TuringMachine::addTransition(const std::string& key_to_transition, Transition* transition) {
+void TuringMachine::addTransition(const std::string& key_to_transition, Transition transition) {
 	instructions[key_to_transition].push_back(transition);
 }
 
-void TuringMachine::addTape(Tape* _tape) {
+void TuringMachine::addTape(Tape& _tape) {
 	tape = _tape;
 }
 
 void TuringMachine::printTape() {
-	tape->show_tape();
+	tape.show_tape();
 }
