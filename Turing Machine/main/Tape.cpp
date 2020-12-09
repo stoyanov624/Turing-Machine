@@ -22,7 +22,7 @@ Tape& Tape::operator=(const Tape& other_tape) {
 	tape = other_tape.tape;
 	current = tape.begin();
 
-	for (DLList<char>::ConstIterator it = other_tape.tape.begin(); it != other_tape.tape.end(); ++it,++current) {
+	for (DLList<char>::Iterator it = other_tape.tape.begin(); it != other_tape.tape.end(); ++it,++current) {
 		if (it == other_tape.current) {
 			break;
 		}
@@ -33,7 +33,7 @@ Tape& Tape::operator=(const Tape& other_tape) {
 
 void Tape::show_tape() const {
 	std::cout << '[';
-	for (DLList<char>::ConstIterator cell = tape.begin(); cell != tape.end(); ++cell) {
+	for (DLList<char>::Iterator cell = tape.begin(); cell != tape.end(); ++cell) {
 		if (cell == current) {
 			std::cout << "{" << *cell << "} ";
 		}
@@ -92,7 +92,7 @@ const char Tape::read() const {
 }
 
 void Tape::saveTape(std::ofstream& out) const {
-	for (DLList<char>::ConstIterator it = tape.begin(); it != tape.end(); ++it)
+	for (DLList<char>::Iterator it = tape.begin(); it != tape.end(); ++it)
 	{
 		if (it == current) {
 			out << "{" << *it << "}";
