@@ -33,17 +33,33 @@ public:
 	public:
 		Iterator();
 		Iterator(Cell* current);
-		bool isLast();
-		bool isFirst();
+		Cell* getCurrent() const;
+		bool isLast() const;
+		bool isFirst() const;
 		void operator++();
 		void operator--();
 		T& operator*() const;
-		bool operator != (const Iterator& other);
-		bool operator == (const Iterator& other);
+		bool operator != (const Iterator& other) const;
+		bool operator == (const Iterator& other) const;
+	};
+
+	class ConstIterator {
+		Cell* const_current;
+	public:
+		ConstIterator();
+		ConstIterator(Cell* current);
+		void operator++();
+		T& operator*() const;
+		bool operator != (const ConstIterator& other) const;
+		bool operator != (const Iterator& other) const;
+		bool operator == (const ConstIterator& other) const;
+		bool operator == (const Iterator& other) const;
 	};
 public:
 	Iterator begin();
 	Iterator end();
+	ConstIterator begin() const;
+	ConstIterator end() const;
 };
 
 template <class T>
@@ -174,12 +190,12 @@ DLList<T>::Iterator::Iterator(Cell* _current) {
 }
 
 template <class T>
-bool DLList<T>::Iterator::isFirst() {
+bool DLList<T>::Iterator::isFirst() const {
 	return current->left == nullptr;
 }
 
 template <class T>
-bool DLList<T>::Iterator::isLast() {
+bool DLList<T>::Iterator::isLast() const {
 	return current->right == nullptr;
 }
 
@@ -199,13 +215,18 @@ T& DLList<T>::Iterator::operator*() const {
 }
 
 template <class T>
-bool DLList<T>::Iterator::operator != (const Iterator& other) {
+bool DLList<T>::Iterator::operator != (const Iterator& other) const {
 	return this->current != other.current;
 }
 
 template <class T>
-bool DLList<T>::Iterator::operator == (const Iterator& other) {
+bool DLList<T>::Iterator::operator == (const Iterator& other) const {
 	return this->current == other.current;
+}
+
+template <class T>
+typename DLList<T>::Cell* DLList<T>::Iterator::getCurrent () const {
+	return this->current;
 }
 
 template <class T>
@@ -216,4 +237,54 @@ typename DLList<T>::Iterator DLList<T>::begin() {
 template <class T>
 typename DLList<T>::Iterator DLList<T>::end() {
 	return Iterator(nullptr);
+}
+
+template <class T>
+DLList<T>::ConstIterator::ConstIterator() {
+	const_current = nullptr;
+}
+
+template <class T>
+DLList<T>::ConstIterator::ConstIterator(Cell* _current) {
+	const_current = _current;
+}
+
+template <class T>
+void DLList<T>::ConstIterator::operator++() {
+	const_current = const_current->right;
+}
+
+template <class T>
+T& DLList<T>::ConstIterator::operator*() const {
+	return const_current->data;
+}
+
+template <class T>
+bool DLList<T>::ConstIterator::operator != (const ConstIterator& other) const {
+	return this->const_current != other.const_current;
+}
+
+template <class T>
+bool DLList<T>::ConstIterator::operator == (const ConstIterator& other) const {
+	return this->const_current == other.const_current;
+}
+
+template <class T>
+bool DLList<T>::ConstIterator::operator != (const Iterator& other) const {
+	return this->const_current != other.getCurrent();
+}
+
+template <class T>
+bool DLList<T>::ConstIterator::operator == (const Iterator& other) const {
+	return this->const_current == other.getCurrent();
+}
+
+template <class T>
+typename DLList<T>::ConstIterator DLList<T>::begin() const {
+	return ConstIterator(head);
+}
+
+template <class T>
+typename DLList<T>::ConstIterator DLList<T>::end() const {
+	return ConstIterator(nullptr);
 }

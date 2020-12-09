@@ -4,7 +4,7 @@ TuringMachine::TuringMachine() {
 	current_state = "start";
 }
 
-TuringMachine::TuringMachine(Tape& other_tm_tape, 
+TuringMachine::TuringMachine(const Tape& other_tm_tape, 
 							 const std::map<std::string, std::vector<Transition>>& other_instructions) {
 	tape = other_tm_tape;
 	current_state = "start";
@@ -121,10 +121,27 @@ void TuringMachine::addTransition(const std::string& key_to_transition, Transiti
 	instructions[key_to_transition].push_back(transition);
 }
 
-void TuringMachine::addTape(Tape& _tape) {
+void TuringMachine::addTape(const Tape& _tape) {
 	tape = _tape;
 }
 
 void TuringMachine::printTape() {
 	tape.show_tape();
+}
+
+bool TuringMachine::isSuccesful() const {
+	return current_state == "halt" || current_state == "accept";
+}
+
+void TuringMachine::composition(TuringMachine& other_machine) {
+	runMachine();
+	if (isSuccesful()) {
+		other_machine.tape = tape;
+		other_machine.tape.move_to_beginning();
+		other_machine.runMachine();
+	}
+	else {
+		std::cout << "First Turing machine did not reach halt state! Composition not possible!\n";
+	}
+	
 }

@@ -16,13 +16,15 @@ private:
 	void loadInstructions(std::ifstream&);
 public:
 	TuringMachine();
-	TuringMachine(Tape&, const std::map<std::string, std::vector<Transition>>&);
+	TuringMachine(const Tape&, const std::map<std::string, std::vector<Transition>>&);
 	void goToNextTransition();
 	void runMachine();
 	void addTransition(const std::string&, Transition);
-	void addTape(Tape&);
+	void addTape(const Tape&);
 	void saveMachine(std::ofstream&);
 	void loadMachine(std::ifstream&);
 	void printTape();
+	void composition(TuringMachine&);
+	bool isSuccesful() const;
 };
 

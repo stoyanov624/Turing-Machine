@@ -4,27 +4,27 @@
 
 int main()
 {
-	Tape tape("11111111");
-	tape.move_right();
-	tape.move_right();
-	tape.move_right();
-	tape.move_right();
 
-	std::map<std::string, std::vector<Transition>> instructions;
-	instructions["start"].push_back(Transition("q1", '1', '0', 'L'));
-	instructions["start"].push_back(Transition("halt", '0', '0', ' '));
-	instructions["q1"].push_back(Transition("q1", '1', '0', 'L'));
-	instructions["q1"].push_back(Transition("q2", '0', '1', ' '));
-	instructions["q2"].push_back(Transition("start", '0', '0', 'L'));
-	instructions["q2"].push_back(Transition("start", '1', '1', 'R'));
+	TuringMachine tm;
+	Tape tape("0110110");
+	tm.addTape(tape);
+	tm.addTransition("start", Transition("q1", '0', '1', 'R'));
+	tm.addTransition("start", Transition("q1", '1', '1', 'R'));
+	tm.addTransition("q1", Transition("q1", '0', '1', 'R'));
+	tm.addTransition("q1", Transition("q1", '1', '1', 'R'));
+	tm.addTransition("q1", Transition("halt", '_', '_', 'L'));
+
+	//tm.runMachine();
+
+	TuringMachine tm2;
+	Tape tape2("0110110");
+	tm2.addTape(tape2);
+	tm2.addTransition("start", Transition("reject", '0', '0', 'H'));
+	tm2.addTransition("start", Transition("q2", '1', '1', 'R'));
+	tm2.addTransition("q2", Transition("start", '1', '0', 'R'));
+	tm2.addTransition("q2", Transition("reject", '0', '0', ' '));
+	tm2.addTransition("q2",Transition("halt",'_','_','L'));
 
 
-	TuringMachine turing_m(tape, instructions);
-	//turing_m.runMachine();
-	turing_m.printTape();
-
-	//TuringMachine tm;
-	//std::ifstream inFile("machine.txt");
-	//tm.loadMachine(inFile);
-	
+	tm.composition(tm2);
 }

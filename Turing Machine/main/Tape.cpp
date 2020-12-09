@@ -18,11 +18,11 @@ Tape::Tape(const std::string& input) {
 	current = tape.begin();
 }
 
-Tape& Tape::operator=(Tape& other_tape) {
+Tape& Tape::operator=(const Tape& other_tape) {
 	tape = other_tape.tape;
 	current = tape.begin();
 
-	for (DLList<char>::Iterator it = other_tape.tape.begin(); it != other_tape.tape.end(); ++it,++current) {
+	for (DLList<char>::ConstIterator it = other_tape.tape.begin(); it != other_tape.tape.end(); ++it,++current) {
 		if (it == other_tape.current) {
 			break;
 		}
@@ -31,9 +31,9 @@ Tape& Tape::operator=(Tape& other_tape) {
 	return *this;
 }
 
-void Tape::show_tape() {
+void Tape::show_tape() const {
 	std::cout << '[';
-	for (DLList<char>::Iterator cell = tape.begin(); cell != tape.end(); ++cell) {
+	for (DLList<char>::ConstIterator cell = tape.begin(); cell != tape.end(); ++cell) {
 		if (cell == current) {
 			std::cout << "{" << *cell << "} ";
 		}
@@ -79,6 +79,10 @@ void Tape::move_left() {
 	--current;
 }
 
+void Tape::move_to_beginning() {
+	current = tape.begin();
+}
+
 void Tape::write(const char symbol) {
 	*current = symbol;
 }
@@ -87,8 +91,8 @@ const char Tape::read() const {
 	return *current;
 }
 
-void Tape::saveTape(std::ofstream& out) {
-	for (DLList<char>::Iterator it = tape.begin(); it != tape.end(); ++it)
+void Tape::saveTape(std::ofstream& out) const {
+	for (DLList<char>::ConstIterator it = tape.begin(); it != tape.end(); ++it)
 	{
 		if (it == current) {
 			out << "{" << *it << "}";
