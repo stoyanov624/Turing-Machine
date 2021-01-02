@@ -152,6 +152,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="LinearComposedTM.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Tape.cpp" />
     <ClCompile Include="Transition.cpp" />
@@ -159,6 +160,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DLList.h" />
+    <ClInclude Include="doctest.h" />
+    <ClInclude Include="LinearComposedTM.h" />
     <ClInclude Include="Tape.h" />
     <ClInclude Include="Transition.h" />
     <ClInclude Include="TuringMachine.h" />

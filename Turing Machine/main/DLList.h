@@ -46,8 +46,8 @@ public:
 public:
 	Iterator begin();
 	Iterator end();
-	Iterator begin() const;
-	Iterator end() const;
+	Iterator const_begin() const;
+	Iterator const_end() const;
 };
 
 template <class T>
@@ -228,12 +228,12 @@ typename DLList<T>::Iterator DLList<T>::end() {
 }
 
 template <class T>
-typename DLList<T>::Iterator DLList<T>::begin() const {
+typename DLList<T>::Iterator DLList<T>::const_begin() const {
 	return Iterator(head);
 }
 
 template <class T>
-typename DLList<T>::Iterator DLList<T>::end() const {
+typename DLList<T>::Iterator DLList<T>::const_end() const {
 	return Iterator(nullptr);
 }
 

@@ -11,6 +11,16 @@ TuringMachine::TuringMachine(const Tape& other_tm_tape,
 	instructions = other_instructions;
 }
 
+TuringMachine& TuringMachine::operator=(const TuringMachine& other_machine) {
+	if (this != &other_machine) {
+		tape = other_machine.tape;
+		current_state = other_machine.current_state;
+		instructions = other_machine.instructions;
+	}
+	
+	return *this;
+}
+
 void TuringMachine::goToNextTransition() {
 	for (auto t : instructions[current_state]) {
 		if (t.getCurrentCell() == tape.read()) {
@@ -44,7 +54,7 @@ void TuringMachine::goToNextTransition() {
 }
 
 void TuringMachine::saveInstructions(std::ofstream& out) {
-	for (std::map<std::string, std::vector<Transition>>::reverse_iterator key = instructions.rbegin(); key != instructions.rend(); ++key) {
+	for (std::map<std::string, std::vector<Transition>>::reverse_iterator key = instructions.rbegin(); key != instructions.rend(); key++) {
 		for (auto value : key->second) {
 			out << value.getCurrentCell() << "{" << key->first << "}" << " -> " << value.getChangeCell() << "{" 
 				<< value.getCurrentTransition() << "}" << value.getMoveDirection() << "\n";
@@ -118,11 +128,20 @@ void TuringMachine::runMachine() {
 }
 
 void TuringMachine::addTransition(const std::string& key_to_transition, Transition transition) {
+	for (auto t : instructions[key_to_transition]) {
+		if (t == transition) 
+			return;
+	}
 	instructions[key_to_transition].push_back(transition);
 }
 
-void TuringMachine::addTape(const Tape& _tape) {
+const Tape& TuringMachine::getTape() const {
+	return tape;
+}
+
+void TuringMachine::setTape(const Tape& _tape) {
 	tape = _tape;
+	tape.move_to_beginning();
 }
 
 void TuringMachine::printTape() {
@@ -133,15 +152,15 @@ bool TuringMachine::isSuccesful() const {
 	return current_state == "halt" || current_state == "accept";
 }
 
-void TuringMachine::composition(TuringMachine& other_machine) {
-	runMachine();
-	if (isSuccesful()) {
-		other_machine.tape = tape;
-		other_machine.tape.move_to_beginning();
-		other_machine.runMachine();
-	}
-	else {
-		std::cout << "First Turing machine did not reach halt state! Composition not possible!\n";
-	}
-	
-}
+//void TuringMachine::composition(TuringMachine& other_machine) {
+//	runMachine();
+//	if (isSuccesful()) {
+//		other_machine.tape = tape;
+//		other_machine.tape.move_to_beginning();
+//		other_machine.runMachine();
+//	}
+//	else {
+//		std::cout << "First Turing machine did not reach halt state! Composition not possible!\n";
+//	}
+//	
+//}

@@ -9,6 +9,17 @@ const std::string& Transition::getCurrentTransition() const {
 	return current_t;
 }
 
+bool Transition::operator==(const Transition& other) const {
+	return current_t == other.current_t
+		&& current_cell == other.current_cell
+		&& change_cell == other.change_cell
+		&& move_direction == other.move_direction;
+}
+
+bool Transition::operator!=(const Transition& other) const {
+	return !(this == &other);
+}
+
 char Transition::getCurrentCell() const {
 	return current_cell;
 }

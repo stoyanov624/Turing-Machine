@@ -10,6 +10,8 @@ private:
 public:
 	Transition();
 	Transition(const std::string&, char, char, char);
+	bool operator==(const Transition&) const;
+	bool operator!=(const Transition&) const;
 	const std::string& getCurrentTransition() const;
 	char getCurrentCell() const;
 	char getChangeCell() const;
