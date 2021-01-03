@@ -1,6 +1,8 @@
 #include <iostream>
 #include "TuringMachine.h"
 #include "LinearComposedTM.h"
+#include "DeciderTM.h"
+#include "WhileComposedTM.h"
 #define DOCTEST_CONFIG_IMPLEMENT
 #include "doctest.h"
 
@@ -40,39 +42,61 @@ TEST_CASE("testing machine that makes everything into 1") {
 }
 
 TEST_CASE("composition of two turing machines") {
-	TuringMachine tm;
-	Tape tape("000000000000");
-	tm.setTape(tape);
-	tm.addTransition("start", Transition("q1", '0', '1', 'R'));
-	tm.addTransition("start", Transition("q1", '1', '1', 'R'));
-	tm.addTransition("q1", Transition("q1", '0', '1', 'R'));
-	tm.addTransition("q1", Transition("q1", '1', '1', 'R'));
-	tm.addTransition("q1", Transition("halt", '_', '_', 'L'));
-	tm.addTransition("q1", Transition("halt", '_', '_', 'L'));
-	tm.addTransition("q1", Transition("halt", '_', '_', 'L'));
-	tm.addTransition("q1", Transition("halt", '_', '_', 'L'));
-	std::ofstream someFile("sss.txt");
-	tm.saveMachine(someFile);
-	//tm.runMachine();
 	
-	//TuringMachine tm2;
-	//Tape tape2("0110110");
-	//tm2.setTape(tape2);
-	//tm2.addTransition("start", Transition("reject", '0', '0', 'H'));
-	//tm2.addTransition("start", Transition("q2", '1', '1', 'R'));
-	//tm2.addTransition("q2", Transition("start", '1', '0', 'R'));
-	//tm2.addTransition("q2", Transition("reject", '0', '0', 'H'));
-	//tm2.addTransition("q2", Transition("halt", '_', '_', 'L'));
-	//tm2.addTransition("start",Transition("halt",'_','_','L'));
-	//
-	//LinearComposedTM tm3(tm, tm2);
-	////tm3.runMachine();
-	//tm3.printTape();
+}
+
+TEST_CASE("testing decider machine") {
+	//Tape t1("011011");
+	//TuringMachine decider;
+	//decider.setTape(t1);
+	//decider.addTransition("start", Transition("reject", '_', '_', 'H'));
+	//decider.addTransition("start", Transition("q1", '1', '1', 'R'));
+	//decider.addTransition("start", Transition("q1", '0', '0', 'R'));
+	//decider.addTransition("q1", Transition("q1", '1', '1', 'R'));
+	//decider.addTransition("q1", Transition("q1", '0', '0', 'R'));
+	//decider.addTransition("q1", Transition("q2", '_', '_', 'L'));
+	//decider.addTransition("q2", Transition("reject", '0', '0', 'H'));
+	//decider.addTransition("q2", Transition("accept", '1', '1', 'H'));
+
+
+	//TuringMachine tm1;
+	//tm1.addTransition("start", Transition("q1", '0', '1', 'R'));
+	//tm1.addTransition("start", Transition("q1", '1', '1', 'R'));
+	//tm1.addTransition("q1", Transition("q1", '0', '1', 'R'));
+	//tm1.addTransition("q1", Transition("q1", '1', '1', 'R'));
+	//tm1.addTransition("q1", Transition("halt", '_', '_', 'L'));
+
+	//TuringMachine tm0;
+	//tm0.addTransition("start", Transition("q1", '1', '0', 'R'));
+	//tm0.addTransition("start", Transition("q1", '0', '0', 'R'));
+	//tm0.addTransition("q1", Transition("q1", '1', '0', 'R'));
+	//tm0.addTransition("q1", Transition("q1", '0', '0', 'R'));
+	//tm0.addTransition("q1", Transition("halt", '_', '_', 'L'));
+
+	////decider.saveMachine();
+	////tm1.saveMachine();
+	////tm0.saveMachine();
+	//DeciderTM dtm(decider, tm1, tm0);
+	//dtm.loadMachine();
+	//dtm.runMachine();
+	//std::cout << dtm.getID();
 }
 
 
-int main() {
 
-	doctest::Context().run();
+int main() {
+	Tape tape("11111110");
+	TuringMachine decider;
+	decider.setTape(tape);
+	decider.addTransition("start", Transition("accept", '1', '1', 'H'));
+	decider.addTransition("start", Transition("reject",'0','0','H'));
+
+	TuringMachine machine;
+	machine.addTransition("start", Transition("halt", '1', 'X', 'R'));
+	decider.saveMachine();
+	machine.saveMachine();
+	WhileComposedTM wctm;
+	wctm.loadMachine();
+	wctm.runMachine();
 }
 

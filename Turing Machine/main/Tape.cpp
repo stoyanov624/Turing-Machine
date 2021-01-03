@@ -116,13 +116,13 @@ void Tape::deserializer(const std::string& input) {
 
 		tape.push_back(input[i]);
 		if (!stop_current) {
-			++current;
+			move_right();
 		}
-		
 	}
 }
 
 void Tape::loadTape(std::ifstream& in) {
+	*this = Tape();
 	std::string input;
 	std::getline(in, input);
 	deserializer(input);

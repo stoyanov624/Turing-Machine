@@ -1,7 +1,10 @@
 #include "TuringMachine.h"
 
+int TuringMachine::machine_ID_generator = 1000;
+
 TuringMachine::TuringMachine() {
 	current_state = "start";
+	machine_ID = machine_ID_generator++;
 }
 
 TuringMachine::TuringMachine(const Tape& other_tm_tape, 
@@ -9,10 +12,12 @@ TuringMachine::TuringMachine(const Tape& other_tm_tape,
 	tape = other_tm_tape;
 	current_state = "start";
 	instructions = other_instructions;
+	machine_ID = machine_ID_generator++;
 }
 
 TuringMachine& TuringMachine::operator=(const TuringMachine& other_machine) {
 	if (this != &other_machine) {
+		machine_ID = other_machine.machine_ID;
 		tape = other_machine.tape;
 		current_state = other_machine.current_state;
 		instructions = other_machine.instructions;
@@ -49,8 +54,15 @@ void TuringMachine::goToNextTransition() {
 			return;
 		}
 	}
-	std::cout << "REJECTED!\n";
 	current_state = "reject";
+}
+
+void TuringMachine::goToStart() {
+	current_state = "start";
+}
+
+void TuringMachine::moveHeadToBeginning() {
+	tape.move_to_beginning();
 }
 
 void TuringMachine::saveInstructions(std::ofstream& out) {
@@ -95,21 +107,48 @@ void TuringMachine::instructionDeserializer(const std::string& input) {
 	addTransition(current_state, Transition(transition_state, current_cell, change_cell, direction_command));
 }
 
-void TuringMachine::saveMachine(std::ofstream& out) {
-	tape.saveTape(out);
-	out << current_state << "\n";
-	saveInstructions(out);
+void TuringMachine::saveMachine() {
+	std::string machine_file_str = "simple_turing_machines\\machine" + std::to_string(machine_ID) + ".txt";
+	std::ofstream machineSaveFile(machine_file_str);
+	machineSaveFile << machine_ID << "\n";
+	tape.saveTape(machineSaveFile);
+	machineSaveFile << current_state << "\n";
+	saveInstructions(machineSaveFile);
 }
 
-void TuringMachine::loadMachine(std::ifstream& in) {
-	std::string input;
+void TuringMachine::loadMachine() {
+	std::string path = "simple_turing_machines";
+	int number = 1;
+	std::vector<std::string> filenames;
+
+	for (const auto& entry : fs::directory_iterator(path)) {
+		filenames.push_back(entry.path().string());
+		std::cout << number << " - " << entry.path().filename() << std::endl;
+		number++;
+	}
+
+	std::cout << "Enter number: ";
+	std::cin >> number;
+	std::cout << std::endl;
+
+	while (number <= 0 || number > filenames.size()) {
+		std::cout << "Enter VALID number: ";
+		std::cin >> number;
+	}
+	path = filenames[number - 1];
+
+	std::ifstream in(path);
+	in >> machine_ID;
+	in.get();
 	tape.loadTape(in);
+	std::string input;
 	std::getline(in, input);
 	current_state = input;
 	loadInstructions(in);
 }
 
 void TuringMachine::loadInstructions(std::ifstream& in) {
+	instructions.clear();
 	std::string input;
 
 	while (std::getline(in, input)) {
@@ -117,14 +156,27 @@ void TuringMachine::loadInstructions(std::ifstream& in) {
 	}
 }
 
+void TuringMachine::saveResult() const {
+	std::string result_file_str = "results_from_machines\\result" + std::to_string(machine_ID) + ".txt";
+	std::ofstream resultFile(result_file_str);
+	tape.saveTape(resultFile);
+}
+
 void TuringMachine::runMachine() {
 	tape.show_tape();
-	while(current_state != "halt" && current_state != "reject") {
+	while(current_state != "halt" && current_state != "reject" && current_state != "accept") {
 		goToNextTransition();
 	}
 	if (current_state == "halt") {
-		std::cout << "HALTED!\n";
+		std::cout << "\nMACHINE " << machine_ID << " HALTED!\n\n";
 	}
+	else if (current_state == "accept") {
+		std::cout << "\nMACHINE" << machine_ID << " ACCEPTED YOUR WORD\n\n";
+	}
+	else if (current_state == "reject") {
+		std::cout << "\nMACHINE" << machine_ID << " REJECTED YOUR WORD\n\n";
+	}
+	saveResult();
 }
 
 void TuringMachine::addTransition(const std::string& key_to_transition, Transition transition) {
@@ -139,9 +191,13 @@ const Tape& TuringMachine::getTape() const {
 	return tape;
 }
 
+int TuringMachine::getID() const {
+	return machine_ID;
+}
+
 void TuringMachine::setTape(const Tape& _tape) {
 	tape = _tape;
-	tape.move_to_beginning();
+	//tape.move_to_beginning();
 }
 
 void TuringMachine::printTape() {
@@ -151,16 +207,3 @@ void TuringMachine::printTape() {
 bool TuringMachine::isSuccesful() const {
 	return current_state == "halt" || current_state == "accept";
 }
-
-//void TuringMachine::composition(TuringMachine& other_machine) {
-//	runMachine();
-//	if (isSuccesful()) {
-//		other_machine.tape = tape;
-//		other_machine.tape.move_to_beginning();
-//		other_machine.runMachine();
-//	}
-//	else {
-//		std::cout << "First Turing machine did not reach halt state! Composition not possible!\n";
-//	}
-//	
-//}
