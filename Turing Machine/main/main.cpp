@@ -41,9 +41,7 @@ TEST_CASE("testing machine that makes everything into 1") {
 
 }
 
-TEST_CASE("composition of two turing machines") {
-	
-}
+
 
 TEST_CASE("testing decider machine") {
 	//Tape t1("011011");
@@ -82,15 +80,13 @@ TEST_CASE("testing decider machine") {
 	//std::cout << dtm.getID();
 }
 
-
-
-int main() {
+TEST_CASE("testing while composition") {
 	Tape tape("11111110");
 	TuringMachine decider;
 	decider.setTape(tape);
 	decider.addTransition("start", Transition("accept", '1', '1', 'H'));
-	decider.addTransition("start", Transition("reject",'0','0','H'));
-
+	decider.addTransition("start", Transition("reject", '0', '0', 'H'));
+	
 	TuringMachine machine;
 	machine.addTransition("start", Transition("halt", '1', 'X', 'R'));
 	decider.saveMachine();
@@ -98,5 +94,11 @@ int main() {
 	WhileComposedTM wctm;
 	wctm.loadMachine();
 	wctm.runMachine();
+}
+
+
+
+int main() {
+	doctest::Context().run();
 }
 

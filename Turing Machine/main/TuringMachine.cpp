@@ -1,5 +1,5 @@
 #include "TuringMachine.h"
-
+//#include "windows.h"
 int TuringMachine::machine_ID_generator = 1000;
 
 TuringMachine::TuringMachine() {
@@ -29,7 +29,7 @@ TuringMachine& TuringMachine::operator=(const TuringMachine& other_machine) {
 void TuringMachine::goToNextTransition() {
 	for (auto t : instructions[current_state]) {
 		if (t.getCurrentCell() == tape.read()) {
-
+			
 			std::cout << "Current cell is " << t.getCurrentCell()
 					  << " soo change it to " << t.getChangeCell();
 
@@ -49,7 +49,8 @@ void TuringMachine::goToNextTransition() {
 				break;
 			}
 			current_state = t.getCurrentTransition();
-			
+			//Sleep(1000);
+			//system("cls");
 			tape.show_tape();
 			return;
 		}
@@ -197,7 +198,6 @@ int TuringMachine::getID() const {
 
 void TuringMachine::setTape(const Tape& _tape) {
 	tape = _tape;
-	//tape.move_to_beginning();
 }
 
 void TuringMachine::printTape() {

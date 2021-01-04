@@ -10,7 +10,6 @@ class Tape
 private:
 	DLList<char> tape;
 	DLList<char>::Iterator current;
-
 	void deserializer(const std::string&);
 public:
 	Tape();

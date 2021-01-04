@@ -1,5 +1,4 @@
 #include "Tape.h"
-
 Tape::Tape() {
 	tape.push_back('_');
 	current = tape.begin();
@@ -19,12 +18,14 @@ Tape::Tape(const std::string& input) {
 }
 
 Tape& Tape::operator=(const Tape& other_tape) {
-	tape = other_tape.tape;
-	current = tape.begin();
+	if (this != &other_tape) {
+		tape = other_tape.tape;
+		current = tape.begin();
 
-	for (DLList<char>::Iterator it = other_tape.tape.const_begin(); it != other_tape.tape.const_end(); ++it,++current) {
-		if (it == other_tape.current) {
-			break;
+		for (DLList<char>::Iterator it = other_tape.tape.const_begin(); it != other_tape.tape.const_end(); ++it, ++current) {
+			if (it == other_tape.current) {
+				break;
+			}
 		}
 	}
 	
@@ -40,6 +41,7 @@ void Tape::show_tape() const {
 		else {
 			std::cout << *cell << " ";
 		}
+		
 	}
 	std::cout << "\b]\n";
 }
@@ -84,6 +86,7 @@ void Tape::move_to_beginning() {
 }
 
 void Tape::write(const char symbol) {
+	std::cout << "NORMAL!";
 	*current = symbol;
 }
 

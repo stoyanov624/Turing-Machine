@@ -19,11 +19,13 @@ void DeciderTM::runMachine() {
 
 	if (decider.isSuccesful()) {
 		tm1.setTape(save_tape);
+		tm1.moveHeadToBeginning();
 		tm1.runMachine();
 		tape = tm1.getTape();
 	}
 	else {
 		tm0.setTape(save_tape);
+		tm1.moveHeadToBeginning();
 		tm0.runMachine();
 		tape = tm0.getTape();
 	}

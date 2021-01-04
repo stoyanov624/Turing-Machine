@@ -11,5 +11,6 @@ public:
 	void runMachine() override;
 	void saveResult() const override;
 	void loadMachine() override;
+	void saveMachine() = delete;
 };
 
