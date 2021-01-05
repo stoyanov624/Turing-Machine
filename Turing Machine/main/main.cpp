@@ -97,8 +97,13 @@ TEST_CASE("testing while composition") {
 }
 
 
-
 int main() {
-	doctest::Context().run();
+	//doctest::Context().run();
+	
+	
+	Tape tape("000001");
+	WhileComposedTM wctm;
+	wctm.loadMachine();
+	wctm.runMachine();
 }
 

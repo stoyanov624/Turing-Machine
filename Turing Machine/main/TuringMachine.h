@@ -11,6 +11,7 @@ protected:
 	static int machine_ID_generator;
 	int machine_ID;
 	Tape tape;
+	void usersTapeChoice();
 private:
 	std::string current_state;
 	std::map<std::string, std::vector<Transition>> instructions;
@@ -18,6 +19,7 @@ private:
 	void instructionDeserializer(const std::string&);
 	void saveInstructions(std::ofstream&);
 	void loadInstructions(std::ifstream&);
+	
 public:
 	TuringMachine();
 	TuringMachine(const Tape&, const std::map<std::string, std::vector<Transition>>&);

@@ -8,7 +8,7 @@ private:
 
 public:
 	DeciderTM();
-	DeciderTM(const TuringMachine&, const TuringMachine&, const TuringMachine&);
+	DeciderTM(const Tape&, const TuringMachine&, const TuringMachine&, const TuringMachine&);
 	void runMachine() override;
 	void saveResult() const override;
 	void loadMachine() override;

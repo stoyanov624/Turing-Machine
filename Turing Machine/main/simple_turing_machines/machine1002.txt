@@ -1,0 +1,8 @@
+1002
+{_}
+start
+1{start} -> 0{q1}R
+0{start} -> Y{q1}R
+1{q1} -> 1{q1}R
+0{q1} -> Y{q1}R
+_{q1} -> _{halt}L

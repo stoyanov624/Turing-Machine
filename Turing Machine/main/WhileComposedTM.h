@@ -9,7 +9,7 @@ private:
 
 public:
 	WhileComposedTM();
-	WhileComposedTM(const TuringMachine&, const TuringMachine&);
+	WhileComposedTM(const Tape&, const TuringMachine&, const TuringMachine&);
 	void runMachine() override;
 	void saveResult() const override;
 	void loadMachine() override;

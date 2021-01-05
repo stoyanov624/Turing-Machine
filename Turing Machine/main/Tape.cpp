@@ -5,6 +5,11 @@ Tape::Tape() {
 }
 
 Tape::Tape(const std::string& input) {
+	initializeTape(input);
+}
+
+void Tape::initializeTape(const std::string& input) {
+	tape.clear();
 	unsigned length = input.length();
 	if (length == 0) {
 		tape.push_back('_');
@@ -86,7 +91,6 @@ void Tape::move_to_beginning() {
 }
 
 void Tape::write(const char symbol) {
-	std::cout << "NORMAL!";
 	*current = symbol;
 }
 

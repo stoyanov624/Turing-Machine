@@ -13,6 +13,7 @@ public:
 	~DLList();
 	void push_back(const T&);
 	void push_front(const T&);
+	void clear();
 	void pop_back();
 	void pop_front();
 	void printList() const;
@@ -130,6 +131,14 @@ void DLList<T>::push_front(const T& element) {
 	head->left = temp;
 	temp->right = head;
 	head = temp;
+}
+
+template <class T>
+void DLList<T>::clear() {
+	if (head == nullptr) {
+		return;
+	}
+	erase();
 }
 
 template <class T>

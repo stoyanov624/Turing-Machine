@@ -207,3 +207,27 @@ void TuringMachine::printTape() {
 bool TuringMachine::isSuccesful() const {
 	return current_state == "halt" || current_state == "accept";
 }
+
+void TuringMachine::usersTapeChoice() {
+	std::string choice;
+	std::cout << "Do you want to enter a custom tape or use the tape from first machine you loaded?\n";
+	std::cout << "1 - Enter custom tape\n";
+	std::cout << "2 - Use tape from first machine\n";
+	std::cout << "Your choice: ";
+	std::cin >> choice;
+	while (choice != "1" && choice != "2") {
+		std::cout << "Enter VALID number: ";
+		std::cin >> choice;
+	}
+
+	if (choice == "1") {
+		std::cout << "Enter tape: ";
+		std::cin >> choice;
+		tape.initializeTape(choice);
+		std::cout << std::endl;
+	}
+	else {
+		std::cout << "Okay we will use the tape from the first machine you loaded\n!";
+		return;
+	}
+}

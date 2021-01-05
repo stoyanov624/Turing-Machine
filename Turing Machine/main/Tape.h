@@ -16,6 +16,7 @@ public:
 	Tape(const std::string&);
 	Tape& operator=(const Tape& other);
 	void show_tape() const;
+	void initializeTape(const std::string&);
 	void move_right();
 	void move_left();
 	void move_to_beginning();
