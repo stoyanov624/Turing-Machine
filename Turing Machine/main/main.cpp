@@ -3,10 +3,10 @@
 #include "LinearComposedTM.h"
 #include "DeciderTM.h"
 #include "WhileComposedTM.h"
-#define DOCTEST_CONFIG_IMPLEMENT
-#include "doctest.h"
 #include "SingleTapeTM.h"
 #include "MultitapeTM.h"
+#define DOCTEST_CONFIG_IMPLEMENT
+#include "doctest.h"
 
 TEST_CASE("testing tape movement,reading and writing") {
 	//Tape t("123456");
@@ -101,9 +101,9 @@ TEST_CASE("testing while composition") {
 
 int main() {
 	//doctest::Context().run();
-	Tape tape1("111");
-	Tape tape2("123");
-	Tape tape3("1234");
+	Tape tape1("100");
+	Tape tape2("100");
+	Tape tape3("100");
 	std::vector<Tape*> tapes;
 	tapes.push_back(&tape1);
 	tapes.push_back(&tape2);
@@ -112,16 +112,14 @@ int main() {
 	
 	std::map<std::string, std::vector<Transition>> ala;
 	TuringMachine* tm = new MultitapeTM(tapes, ala);
-	tm->saveMachine();
-	TuringMachine* tm2 = new MultitapeTM();
-	tm2->loadMachine();
-	tm2->printTape();
-
-	TuringMachine* t1 = new SingleTapeTM(tape1,ala);
-	t1->saveMachine();
-	TuringMachine* t2 = new SingleTapeTM();
-	t2->loadMachine();
-	t2->printTape();
-
+	tm->addTransition("start", Transition("q1", "111", "111", "RRR"));
+	tm->addTransition("start", Transition("q1", "000", "XYZ", "RRR"));
+	tm->addTransition("q1", Transition("q1", "000", "XYZ", "RRR"));
+	tm->addTransition("q1", Transition("q1", "111", "111", "RRR"));
+	tm->addTransition("q1", Transition("halt", "___", "___", "LLL"));
+	//tm->runMachine();
+	//tm->saveMachine();
+	tm->toSingleTape();
+	tm->runMachine();
 }
 

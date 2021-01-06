@@ -24,4 +24,5 @@ public:
 	const char read() const;
 	void saveTape(std::ofstream&) const;
 	void loadTape(std::ifstream&);
+	const std::string tape_str() const;
 };

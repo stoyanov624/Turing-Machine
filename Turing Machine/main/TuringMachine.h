@@ -16,6 +16,7 @@ protected:
 	void saveInstructions(std::ofstream&);
 	void loadInstructions(std::ifstream&);
 	const std::string getPathToWantedLoad();
+	void printFinalState() const;
 private:
 	void instructionDeserializer(const std::string&);
 	virtual void goToNextTransition() = 0;
@@ -38,5 +39,7 @@ public:
 	virtual void loadMachine() = 0;
 	virtual void saveResult() const = 0;
 	virtual void runMachine() = 0;
+	virtual void toSingleTape() = 0;
+	virtual ~TuringMachine();
 };
 

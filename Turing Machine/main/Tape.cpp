@@ -100,8 +100,7 @@ const char Tape::read() const {
 }
 
 void Tape::saveTape(std::ofstream& out) const {
-	for (DLList<char>::Iterator it = tape.const_begin(); it != tape.const_end(); ++it)
-	{
+	for (DLList<char>::Iterator it = tape.const_begin(); it != tape.const_end(); ++it) {
 		if (it == current) {
 			out << "{" << *it << "}";
 			continue;
@@ -134,6 +133,21 @@ void Tape::loadTape(std::ifstream& in) {
 	std::string input;
 	std::getline(in, input);
 	deserializer(input);
+}
 
+const std::string Tape::tape_str() const {
+	std::string result = "";
+	for (DLList<char>::Iterator cell = tape.const_begin(); cell != tape.const_end(); ++cell) {
+		if (cell == current) {
+			result += '{';
+			result += *cell;
+			result += '}';
+		}
+		else {
+			result+= *cell;
+		}
+
+	}
+	return result;
 }
 

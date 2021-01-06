@@ -1,6 +1,6 @@
-//#include "TuringMachine.h"
-//#pragma once
-//
+#include "TuringMachine.h"
+#pragma once
+
 //class LinearComposedTM : public TuringMachine {
 //private:
 //	TuringMachine* first_tm;
@@ -14,4 +14,4 @@
 //	void loadMachine() override;
 //	void saveMachine() override;
 //};
-//
+

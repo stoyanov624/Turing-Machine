@@ -46,8 +46,6 @@ void SingleTapeTM::goToNextTransition() {
 				break;
 			}
 			current_state = t.getCurrentTransition();
-			//Sleep(1000);
-			//system("cls");
 			tape.show_tape();
 			return;
 		}
@@ -63,46 +61,55 @@ void SingleTapeTM::moveHeadToBeginning() {
 void SingleTapeTM::saveMachine() {
 	std::string machine_file_str = "turing_machines\\singletape_machine" + std::to_string(machine_ID) + ".txt";
 	std::ofstream machineSaveFile(machine_file_str);
-	machineSaveFile << machine_ID << "\n";
-	tape.saveTape(machineSaveFile);
-	machineSaveFile << current_state << "\n";
-	saveInstructions(machineSaveFile);
+	if (machineSaveFile.is_open()) {
+		machineSaveFile << machine_ID << "\n";
+		tape.saveTape(machineSaveFile);
+		machineSaveFile << current_state << "\n";
+		saveInstructions(machineSaveFile);
+		machineSaveFile.close();
+	}
+	else {
+		std::cout << "Error in openning machine savefile!\n";
+	}
 }
 
 
 void SingleTapeTM::saveResult() const {
 	std::string result_file_str = "results_from_machines\\result" + std::to_string(machine_ID) + ".txt";
 	std::ofstream resultFile(result_file_str);
-	tape.saveTape(resultFile);
+	if (resultFile.is_open()) {
+		tape.saveTape(resultFile);
+		resultFile.close();
+	}
+	else {
+		std::cout << "Error in opening machine resultfile!\n";
+	}
+	
 }
 
 
 void SingleTapeTM::runMachine() {
+	if (instructions.empty()) {
+		std::cout << "Can't start the machine with no instructions!\n";
+		return;
+	}
 	tape.show_tape();
 	while (current_state != "halt" && current_state != "reject" && current_state != "accept") {
 		goToNextTransition();
 	}
-	if (current_state == "halt") {
-		std::cout << "\nMACHINE " << machine_ID << " HALTED!\n\n";
-	}
-	else if (current_state == "accept") {
-		std::cout << "\nMACHINE" << machine_ID << " ACCEPTED YOUR WORD\n\n";
-	}
-	else if (current_state == "reject") {
-		std::cout << "\nMACHINE" << machine_ID << " REJECTED YOUR WORD\n\n";
-	}
+	printFinalState();
 	saveResult();
 }
 
 
-//const Tape& SingleTapeTM::getTape() const {
-//	return tape;
-//}
-//
-//
-//void SingleTapeTM::setTape(const Tape& _tape) {
-//	tape = _tape;
-//}
+Tape& SingleTapeTM::getTape() {
+	return tape;
+}
+
+
+void SingleTapeTM::setTape(const Tape& _tape) {
+	tape = _tape;
+}
 
 void SingleTapeTM::printTape() {
 	tape.show_tape();
@@ -113,13 +120,24 @@ void SingleTapeTM::loadMachine() {
 	if (path == "")
 		return;
 
+	if (path[path.find('\\') + 1] != 's') {
+		std::cout << "Tryng to load a multitape machine! That won't work well!";
+		return;
+	}
+
 	std::ifstream in(path);
-	in >> machine_ID;
-	in.get();
-	tape.loadTape(in);
-	std::string input;
-	std::getline(in, input);
-	current_state = input;
-	loadInstructions(in);
-	
+	if (in.is_open()) {
+		in >> machine_ID;
+		in.get();
+		tape.loadTape(in);
+		std::string input;
+		std::getline(in, input);
+		current_state = input;
+		loadInstructions(in);
+	}
+	else {
+		std::cout << "Error in opening machine loadfile!\n";
+	}
 }
+
+void SingleTapeTM::toSingleTape() {}

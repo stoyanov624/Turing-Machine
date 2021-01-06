@@ -31,3 +31,15 @@ const std::string& Transition::getChangeCell() const {
 const std::string& Transition::getMoveDirection() const {
 	return move_direction;
 }
+
+void Transition::setCurrentCell(const std::string& _current_cell ) {
+	current_cell = _current_cell;
+}
+
+void Transition::setChangeCell(const std::string& _change_cell) {
+	change_cell = _change_cell;
+}
+
+void Transition::setMoveDirection(const std::string& _move_direction) {
+	move_direction = _move_direction;
+}

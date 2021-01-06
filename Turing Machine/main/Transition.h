@@ -16,5 +16,8 @@ public:
 	const std::string& getCurrentCell() const;
 	const std::string& getChangeCell() const;
 	const std::string& getMoveDirection() const;
+	void setCurrentCell(const std::string&);
+	void setChangeCell(const std::string&);
+	void setMoveDirection(const std::string&);
 };
 

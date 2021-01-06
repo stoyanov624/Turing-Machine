@@ -6,6 +6,7 @@ class SingleTapeTM : public TuringMachine
 private:
 	Tape tape;
 	void goToNextTransition();
+	void toSingleTape();
 public:
 	SingleTapeTM();
 	SingleTapeTM(const Tape&, const std::map<std::string, std::vector<Transition>>&);
@@ -17,8 +18,8 @@ public:
 	void saveResult() const;
 	void runMachine();
 
-	//const Tape& getTape() const;
-	//void setTape(const Tape& _tape);
+	Tape& getTape() ;
+	void setTape(const Tape& _tape);
 	void printTape();
 	void loadMachine();
 };

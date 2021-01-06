@@ -1,5 +1,4 @@
 #include "TuringMachine.h"
-//#include "windows.h"
 int TuringMachine::machine_ID_generator = 1000;
 
 TuringMachine::TuringMachine() {
@@ -15,6 +14,18 @@ TuringMachine::TuringMachine(const std::map<std::string, std::vector<Transition>
 
 void TuringMachine::goToStart() {
 	current_state = "start";
+}
+
+void TuringMachine::printFinalState() const {
+	if (current_state == "halt") {
+		std::cout << "\nMACHINE " << machine_ID << " HALTED!\n\n";
+	}
+	else if (current_state == "accept") {
+		std::cout << "\nMACHINE" << machine_ID << " ACCEPTED YOUR WORD\n\n";
+	}
+	else if (current_state == "reject") {
+		std::cout << "\nMACHINE" << machine_ID << " REJECTED YOUR WORD\n\n";
+	}
 }
 
 void TuringMachine::saveInstructions(std::ofstream& out) {
@@ -77,6 +88,7 @@ void TuringMachine::instructionDeserializer(const std::string& input) {
 	addTransition(current_state, Transition(next_state, current_cells, change_cells, move_commands));
 }
 
+
 void TuringMachine::loadInstructions(std::ifstream& in) {
 	instructions.clear();
 	std::string input;
@@ -100,6 +112,10 @@ int TuringMachine::getID() const {
 
 bool TuringMachine::isSuccesful() const {
 	return current_state == "halt" || current_state == "accept";
+}
+
+TuringMachine::~TuringMachine() {
+	machine_ID_generator--;
 }
 
 //void TuringMachine::usersTapeChoice() {
