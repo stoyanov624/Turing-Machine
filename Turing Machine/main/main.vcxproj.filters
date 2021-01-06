@@ -36,6 +36,12 @@
     <ClCompile Include="WhileComposedTM.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MultitapeTM.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SingleTapeTM.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Transition.h">
@@ -60,6 +66,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="WhileComposedTM.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MultitapeTM.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SingleTapeTM.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

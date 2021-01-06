@@ -1,4 +1,0 @@
-1001
-{_}
-start
-1{start} -> X{halt}R

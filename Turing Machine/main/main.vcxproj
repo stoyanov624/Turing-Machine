@@ -155,6 +155,8 @@
     <ClCompile Include="DeciderTM.cpp" />
     <ClCompile Include="LinearComposedTM.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MultitapeTM.cpp" />
+    <ClCompile Include="SingleTapeTM.cpp" />
     <ClCompile Include="Tape.cpp" />
     <ClCompile Include="Transition.cpp" />
     <ClCompile Include="TuringMachine.cpp" />
@@ -165,6 +167,8 @@
     <ClInclude Include="DLList.h" />
     <ClInclude Include="doctest.h" />
     <ClInclude Include="LinearComposedTM.h" />
+    <ClInclude Include="MultitapeTM.h" />
+    <ClInclude Include="SingleTapeTM.h" />
     <ClInclude Include="Tape.h" />
     <ClInclude Include="Transition.h" />
     <ClInclude Include="TuringMachine.h" />

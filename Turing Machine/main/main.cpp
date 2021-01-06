@@ -5,6 +5,8 @@
 #include "WhileComposedTM.h"
 #define DOCTEST_CONFIG_IMPLEMENT
 #include "doctest.h"
+#include "SingleTapeTM.h"
+#include "MultitapeTM.h"
 
 TEST_CASE("testing tape movement,reading and writing") {
 	//Tape t("123456");
@@ -81,29 +83,45 @@ TEST_CASE("testing decider machine") {
 }
 
 TEST_CASE("testing while composition") {
-	Tape tape("11111110");
-	TuringMachine decider;
-	decider.setTape(tape);
-	decider.addTransition("start", Transition("accept", '1', '1', 'H'));
-	decider.addTransition("start", Transition("reject", '0', '0', 'H'));
-	
-	TuringMachine machine;
-	machine.addTransition("start", Transition("halt", '1', 'X', 'R'));
-	decider.saveMachine();
-	machine.saveMachine();
-	WhileComposedTM wctm;
-	wctm.loadMachine();
-	wctm.runMachine();
+	//Tape tape("11111110");
+	//TuringMachine decider;
+	//decider.setTape(tape);
+	//decider.addTransition("start", Transition("accept", '1', '1', 'H'));
+	//decider.addTransition("start", Transition("reject", '0', '0', 'H'));
+	//
+	//TuringMachine machine;
+	//machine.addTransition("start", Transition("halt", '1', 'X', 'R'));
+	//decider.saveMachine();
+	//machine.saveMachine();
+	//WhileComposedTM wctm;
+	//wctm.loadMachine();
+	//wctm.runMachine();
 }
 
 
 int main() {
 	//doctest::Context().run();
+	Tape tape1("111");
+	Tape tape2("123");
+	Tape tape3("1234");
+	std::vector<Tape*> tapes;
+	tapes.push_back(&tape1);
+	tapes.push_back(&tape2);
+	tapes.push_back(&tape3);
+
 	
-	
-	Tape tape("000001");
-	WhileComposedTM wctm;
-	wctm.loadMachine();
-	wctm.runMachine();
+	std::map<std::string, std::vector<Transition>> ala;
+	TuringMachine* tm = new MultitapeTM(tapes, ala);
+	tm->saveMachine();
+	TuringMachine* tm2 = new MultitapeTM();
+	tm2->loadMachine();
+	tm2->printTape();
+
+	TuringMachine* t1 = new SingleTapeTM(tape1,ala);
+	t1->saveMachine();
+	TuringMachine* t2 = new SingleTapeTM();
+	t2->loadMachine();
+	t2->printTape();
+
 }
 

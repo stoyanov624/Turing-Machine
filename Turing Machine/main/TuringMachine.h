@@ -10,34 +10,33 @@ class TuringMachine
 protected:
 	static int machine_ID_generator;
 	int machine_ID;
-	Tape tape;
-	void usersTapeChoice();
-private:
 	std::string current_state;
 	std::map<std::string, std::vector<Transition>> instructions;
-	void goToNextTransition();
-	void instructionDeserializer(const std::string&);
+	//void usersTapeChoice();
 	void saveInstructions(std::ofstream&);
 	void loadInstructions(std::ifstream&);
-	
+	const std::string getPathToWantedLoad();
+private:
+	void instructionDeserializer(const std::string&);
+	virtual void goToNextTransition() = 0;
 public:
 	TuringMachine();
-	TuringMachine(const Tape&, const std::map<std::string, std::vector<Transition>>&);
-	TuringMachine& operator=(const TuringMachine&);
+	TuringMachine(const std::map<std::string, std::vector<Transition>>&);
 public:
-	const Tape& getTape() const;
 	int getID() const;
-	void setTape(const Tape&);
 	bool isSuccesful() const;
-public:
-	void addTransition(const std::string&, Transition);
-	void printTape();
+	void addTransition(const std::string&,const Transition&);
 	void goToStart();
-	void moveHeadToBeginning();
 public:
-	void saveMachine();
-	virtual void loadMachine();
-	virtual void saveResult() const;
-	virtual void runMachine();
+	//virtual const std::vector<Tape>& getTapes() const = 0;
+	//virtual void setTape(const std::vector<Tape>&) = 0;
+	//virtual const Tape& getTape() const = 0;
+	//virtual void setTape(const Tape&) = 0;
+	virtual void moveHeadToBeginning() = 0;
+	virtual void printTape() = 0;
+	virtual void saveMachine() = 0;
+	virtual void loadMachine() = 0;
+	virtual void saveResult() const = 0;
+	virtual void runMachine() = 0;
 };
 

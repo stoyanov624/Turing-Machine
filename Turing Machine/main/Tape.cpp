@@ -24,6 +24,7 @@ void Tape::initializeTape(const std::string& input) {
 
 Tape& Tape::operator=(const Tape& other_tape) {
 	if (this != &other_tape) {
+		tape.clear();
 		tape = other_tape.tape;
 		current = tape.begin();
 
@@ -133,5 +134,6 @@ void Tape::loadTape(std::ifstream& in) {
 	std::string input;
 	std::getline(in, input);
 	deserializer(input);
+
 }
 

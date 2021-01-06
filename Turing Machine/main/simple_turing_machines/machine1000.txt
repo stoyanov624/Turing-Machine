@@ -1,5 +1,0 @@
-1000
-{1}1111110
-start
-1{start} -> 1{accept}H
-0{start} -> 0{reject}H

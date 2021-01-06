@@ -4,17 +4,17 @@ class Transition
 {
 private:
 	std::string current_t;
-	char current_cell;
-	char change_cell;
-	char move_direction;
+	std::string current_cell;
+	std::string change_cell;
+	std::string move_direction;
 public:
 	Transition();
-	Transition(const std::string&, char, char, char);
+	Transition(const std::string&, const std::string&, const std::string&, const std::string&);
 	bool operator==(const Transition&) const;
 	bool operator!=(const Transition&) const;
 	const std::string& getCurrentTransition() const;
-	char getCurrentCell() const;
-	char getChangeCell() const;
-	char getMoveDirection() const;
+	const std::string& getCurrentCell() const;
+	const std::string& getChangeCell() const;
+	const std::string& getMoveDirection() const;
 };
 
