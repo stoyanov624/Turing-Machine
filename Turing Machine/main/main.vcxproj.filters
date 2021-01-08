@@ -27,15 +27,6 @@
     <ClCompile Include="TuringMachine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="LinearComposedTM.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DeciderTM.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="WhileComposedTM.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="MultitapeTM.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -57,15 +48,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="doctest.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="LinearComposedTM.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DeciderTM.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="WhileComposedTM.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MultitapeTM.h">

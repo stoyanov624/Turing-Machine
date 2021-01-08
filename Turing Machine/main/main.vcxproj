@@ -152,27 +152,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="DeciderTM.cpp" />
-    <ClCompile Include="LinearComposedTM.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MultitapeTM.cpp" />
     <ClCompile Include="SingleTapeTM.cpp" />
     <ClCompile Include="Tape.cpp" />
     <ClCompile Include="Transition.cpp" />
     <ClCompile Include="TuringMachine.cpp" />
-    <ClCompile Include="WhileComposedTM.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DeciderTM.h" />
     <ClInclude Include="DLList.h" />
     <ClInclude Include="doctest.h" />
-    <ClInclude Include="LinearComposedTM.h" />
     <ClInclude Include="MultitapeTM.h" />
     <ClInclude Include="SingleTapeTM.h" />
     <ClInclude Include="Tape.h" />
     <ClInclude Include="Transition.h" />
     <ClInclude Include="TuringMachine.h" />
-    <ClInclude Include="WhileComposedTM.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

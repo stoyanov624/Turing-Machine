@@ -14,10 +14,8 @@ SingleTapeTM::SingleTapeTM(const std::string& tape_str,
 
 SingleTapeTM& SingleTapeTM::operator=(const SingleTapeTM& other_machine) {
 	if (this != &other_machine) {
-		machine_ID = other_machine.machine_ID;
 		tape = other_machine.tape;
-		current_state = other_machine.current_state;
-		instructions = other_machine.instructions;
+		TuringMachine::operator=(other_machine);
 	}
 
 	return *this;
@@ -53,7 +51,6 @@ void SingleTapeTM::goToNextTransition() {
 	current_state = "reject";
 }
 
-
 void SingleTapeTM::moveHeadToBeginning() {
 	tape.move_to_beginning();
 }
@@ -73,7 +70,6 @@ void SingleTapeTM::saveMachine() {
 	}
 }
 
-
 void SingleTapeTM::saveResult() const {
 	std::string result_file_str = "results_from_machines\\result" + std::to_string(machine_ID) + ".txt";
 	std::ofstream resultFile(result_file_str);
@@ -86,7 +82,6 @@ void SingleTapeTM::saveResult() const {
 	}
 	
 }
-
 
 void SingleTapeTM::runMachine() {
 	if (instructions.empty()) {
@@ -101,11 +96,9 @@ void SingleTapeTM::runMachine() {
 	saveResult();
 }
 
-
-Tape& SingleTapeTM::getTape() {
+const Tape& SingleTapeTM::getTape() const {
 	return tape;
 }
-
 
 void SingleTapeTM::setTape(const Tape& _tape) {
 	tape = _tape;
@@ -121,7 +114,7 @@ void SingleTapeTM::loadMachine() {
 		return;
 
 	if (path[path.find('\\') + 1] != 's') {
-		std::cout << "Tryng to load a multitape machine! That won't work well!";
+		std::cout << "Tryng to load a multitape machine! That won't work well!\n";
 		return;
 	}
 
@@ -140,4 +133,95 @@ void SingleTapeTM::loadMachine() {
 	}
 }
 
+void SingleTapeTM::linearComposition(SingleTapeTM& second_tm) {
+	runMachine();
+	
+	if (isSuccesful()) {
+		std::cout << "First machine ended succesfully! Launching second machine!\n";
+		moveHeadToBeginning();
+		second_tm.tape = tape;
+		second_tm.runMachine();
+	}
+	
+	std::string result_file_str = "results_from_LC_machines\\LCresult" + std::to_string(machine_ID + second_tm.machine_ID) + ".txt";
+	std::ofstream resultFile(result_file_str);
+	second_tm.tape.saveTape(resultFile);
+	
+}
+
+void SingleTapeTM::ifComposition(SingleTapeTM& tm1, SingleTapeTM& tm0) {
+	Tape saveTape = tape;
+	bool we_ran_first_machine = true;
+	std::cout << "Launching DECIDER machine!\n";
+	runMachine();
+	if (isSuccesful()) {
+		std::cout << "Launching ACCEPT machine!\n";
+		tm1.tape = saveTape;
+		tm1.moveHeadToBeginning();
+		tm1.runMachine();
+	
+	}
+	else {
+		std::cout << "Launching REJECT machine!\n";
+		tm0.tape = saveTape;
+		tm0.moveHeadToBeginning();
+		tm0.runMachine();
+		we_ran_first_machine = false;
+	}
+	
+	std::string result_file_str = "results_from_Decider_machines\\result"
+		+ std::to_string(machine_ID + tm1.machine_ID + tm0.machine_ID) + ".txt";
+	std::ofstream resultFile(result_file_str);
+	if (we_ran_first_machine) {
+		tm1.tape.saveTape(resultFile);
+	}
+	else {
+		tm0.tape.saveTape(resultFile);
+	}
+}
+
+
+void SingleTapeTM::whileComposition(SingleTapeTM& tm) {
+	tm.tape = tape;
+	runMachine();
+	while (isSuccesful()) {
+		tm.tape = tape;
+		tm.runMachine();
+		tm.goToStart();
+	
+		tape = tm.tape;
+		goToStart();
+		runMachine();
+	}
+	
+	std::string result_file_str = "results_from_While_machines\\Whileresult" + std::to_string(machine_ID + tm.machine_ID) + ".txt";
+	std::ofstream resultFile(result_file_str);
+	tm.tape.saveTape(resultFile);
+}
+
+void SingleTapeTM::usersTapeChoice() {
+	std::string choice;
+	std::cout << "Do you want to enter a custom tape or use the tape from machine you loaded?\n";
+	std::cout << "1 - Enter custom tape\n";
+	std::cout << "2 - Use tape from first machine\n";
+	std::cout << "Your choice: ";
+	std::cin >> choice;
+	while (choice != "1" && choice != "2") {
+		std::cout << "Enter VALID number: ";
+		std::cin >> choice;
+	}
+
+	if (choice == "1") {
+		std::cout << "Enter tape: ";
+		std::cin >> choice;
+		tape.initializeTape(choice);
+		std::cout << std::endl;
+	}
+	else {
+		std::cout << "Okay we will use the tape from the first machine you loaded\n!";
+		return;
+	}
+}
+
 void SingleTapeTM::toSingleTape() {}
+void SingleTapeTM::toMultiTape() {}

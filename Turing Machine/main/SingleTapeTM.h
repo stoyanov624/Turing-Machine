@@ -6,10 +6,12 @@ class SingleTapeTM : public TuringMachine
 private:
 	Tape tape;
 	void goToNextTransition();
+
 	void toSingleTape();
+	void toMultiTape();
 public:
 	SingleTapeTM();
-	SingleTapeTM(const Tape&, const std::map<std::string, std::vector<Transition>>&);
+	SingleTapeTM(const Tape&, const std::map<std::string, std::vector<Transition>>& = std::map<std::string, std::vector<Transition>>());
 	SingleTapeTM(const std::string&, const std::map<std::string, std::vector<Transition>>&);
 	SingleTapeTM& operator=(const SingleTapeTM&);
 
@@ -18,9 +20,14 @@ public:
 	void saveResult() const;
 	void runMachine();
 
-	Tape& getTape() ;
-	void setTape(const Tape& _tape);
+	const Tape& getTape() const;
+	void setTape(const Tape&);
 	void printTape();
 	void loadMachine();
+
+	void usersTapeChoice();
+	void linearComposition(SingleTapeTM&);
+	void ifComposition(SingleTapeTM&, SingleTapeTM&);
+	void whileComposition(SingleTapeTM&);
 };
 
