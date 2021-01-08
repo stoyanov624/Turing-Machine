@@ -206,9 +206,11 @@ void SingleTapeTM::usersTapeChoice() {
 	std::cout << "2 - Use tape from first machine\n";
 	std::cout << "Your choice: ";
 	std::cin >> choice;
+	choice.erase(remove(choice.begin(), choice.end(), ' '), choice.end());
 	while (choice != "1" && choice != "2") {
 		std::cout << "Enter VALID number: ";
 		std::cin >> choice;
+		choice.erase(remove(choice.begin(), choice.end(), ' '), choice.end());
 	}
 
 	if (choice == "1") {
@@ -218,7 +220,7 @@ void SingleTapeTM::usersTapeChoice() {
 		std::cout << std::endl;
 	}
 	else {
-		std::cout << "Okay we will use the tape from the first machine you loaded\n!";
+		std::cout << "Okay we will use the tape from the machine you loaded\n!";
 		return;
 	}
 }

@@ -167,6 +167,7 @@
     <ClInclude Include="Tape.h" />
     <ClInclude Include="Transition.h" />
     <ClInclude Include="TuringMachine.h" />
+    <ClInclude Include="userInterface.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

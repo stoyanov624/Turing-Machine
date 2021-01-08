@@ -1,7 +1,5 @@
 #include <iostream>
-#include "TuringMachine.h"
-#include "SingleTapeTM.h"
-#include "MultitapeTM.h"
+#include "userInterface.h"
 #define DOCTEST_CONFIG_IMPLEMENT
 #include "doctest.h"
 
@@ -85,63 +83,9 @@ TEST_CASE("testing while composition") {
 	//decider.whileComposition(machine);
 }
 
-void help() {
-	std::cout << "0 - Exit program\n";
-	std::cout << "1 - Run a singletape machine\n";
-	std::cout << "2 - Run a multitape machine\n";
-	std::cout << "3 - Run a singletape composition\n";
-	std::cout << "4 - Run a multitape composition\n\n";
-}
 
 int main() {
 	//doctest::Context().run();
-	std::string command;
-	
-	while (true) {
-		
-		help();
-		std::cout << "Enter command: ";
-		std::cin >> command;
-		system("cls");
-		if (command == "0") {
-			std::cout << "Exiting program...\n";
-			system("pause");
-			break;
-		}
-		else if (command == "1") {
-			TuringMachine* tm = new SingleTapeTM();
-			if (tm->hasNoInstructions()) {
-				std::cout << "Error in loading :(\n\n";
-			}
-			else {
-				tm->loadMachine();
-				tm->usersTapeChoice();
-				tm->runMachine();
-				delete tm;
-			}
-		}
-		else if (command == "2") {
-			TuringMachine* tm = new MultitapeTM();
-			tm->loadMachine();
-			if (tm->hasNoInstructions()) {
-				std::cout << "Error in loading :(\n\n";
-			}
-			else {
-				tm->usersTapeChoice();
-				tm->runMachine();
-				delete tm;
-			}
-		}
-		else if (command == "3") {
-
-		}
-		else if (command == "4") {
-
-		}
-		else {
-			std::cout << "INVALID COMMAND!\n\n";
-		}
-		
-	}
+	RUN();
 }
 
