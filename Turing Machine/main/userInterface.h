@@ -12,6 +12,14 @@ void help() {
 	std::cout << "4 - Run a multitape composition\n\n";
 }
 
+void printCompositionOptions() {
+	std::cout << "What composition do you want to run?\n";
+	std::cout << "1 - Linear composition\n";
+	std::cout << "2 - If/Decider composition\n";
+	std::cout << "3 - While composition\n";
+	std::cout << "Enter choice: ";
+}
+
 void removeSpaces(std::string& sentence) {
 	sentence.erase(remove(sentence.begin(), sentence.end(), ' '), sentence.end());
 }
@@ -100,14 +108,6 @@ void runWhileComp() {
 	std::cout << "Load do singletape machine for while composition!\n";
 	doMachine.loadMachine();
 	whileMachine.whileComposition(doMachine);
-}
-
-void printCompositionOptions() {
-	std::cout << "What composition do you want to run?\n";
-	std::cout << "1 - Linear composition\n";
-	std::cout << "2 - If/Decider composition\n";
-	std::cout << "3 - While composition\n";
-	std::cout << "Enter choice: ";
 }
 
 template <typename Machine>

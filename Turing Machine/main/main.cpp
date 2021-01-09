@@ -5,7 +5,7 @@
 
 
 int main() {
-	runTests();
-	//RUN();
+	//runTests();
+	RUN();
 }
 

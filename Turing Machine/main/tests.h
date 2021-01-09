@@ -126,6 +126,39 @@ TEST_CASE("testing multitape linear composition") {
 	
 }
 
+TEST_CASE("testing multitape while composition") {
+	//MultitapeTM tm(3435);
+	//tm.addTransition("start", Transition("accept", "111", "111", "HHH"));
+	//tm.addTransition("start", Transition("reject", "000", "000", "HHH"));
+	//tm.addTransition("start", Transition("reject", "___", "___", "LLL"));
+	//tm.usersTapeChoice();
+	//
+	//MultitapeTM tm2(1545);
+	//tm2.addTransition("start", Transition("halt", "111", "ONE", "RRR"));
+	////tm.toSingleTape();
+	//tm.whileComposition(tm2);
+}
+
+TEST_CASE("testing multitape if composition") {
+	//MultitapeTM tm(456);
+	//tm.addTransition("start", Transition("accept", "111", "111", "HHH"));
+	//
+	//MultitapeTM tm1(432);
+	//tm1.addTransition("start", Transition("halt", "111", "ONE", "HHH"));
+	//
+	//MultitapeTM tm0(100);
+	//tm0.addTransition("start", Transition("halt", "000", "NUL", "HHH"));
+	//tm0.addTransition("start", Transition("halt", "100", "NUL", "HHH"));
+	//tm0.addTransition("start", Transition("halt", "010", "NUL", "HHH"));
+	//tm0.addTransition("start", Transition("halt", "001", "NUL", "HHH"));
+	//tm0.addTransition("start", Transition("halt", "110", "NUL", "HHH"));
+	//tm0.addTransition("start", Transition("halt", "101", "NUL", "HHH"));
+	//tm0.addTransition("start", Transition("halt", "011", "NUL", "HHH"));
+	//
+	//tm.usersTapeChoice();
+	//tm.ifComposition(tm1, tm0);
+}
+
 void runTests() {
 	doctest::Context().run();
 }

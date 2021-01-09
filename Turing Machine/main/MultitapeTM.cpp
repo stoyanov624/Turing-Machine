@@ -107,7 +107,12 @@ void MultitapeTM::linearComposition(MultitapeTM& second_tm) {
 		moveHeadToBeginning();
 		second_tm.tapes = tapes;
 		second_tm.tapes_count = tapes_count;
+		second_tm.isSingleTaped = isSingleTaped;
 		second_tm.runMachine();
+	}
+	else {
+		std::cout << "First machine didn't end!\n";
+		return;
 	}
 
 	std::string result_file_str = "results_from_LC_machines\\LCresult" + std::to_string(machine_ID + second_tm.machine_ID) + ".txt";
@@ -124,6 +129,7 @@ void MultitapeTM::ifComposition(MultitapeTM& tm1, MultitapeTM& tm0) {
 	if (isSuccesful()) {
 		tm1.tapes = saveTape;
 		tm1.tapes_count = tapes_count;
+		tm1.isSingleTaped = isSingleTaped;
 		tm1.moveHeadToBeginning();
 		tm1.runMachine();
 
@@ -131,6 +137,7 @@ void MultitapeTM::ifComposition(MultitapeTM& tm1, MultitapeTM& tm0) {
 	else {
 		tm0.tapes = saveTape;
 		tm0.tapes_count = tapes_count;
+		tm0.isSingleTaped = isSingleTaped;
 		tm0.moveHeadToBeginning();
 		tm0.runMachine();
 		first_machine_ran = false;
@@ -152,6 +159,7 @@ void MultitapeTM::ifComposition(MultitapeTM& tm1, MultitapeTM& tm0) {
 void MultitapeTM::whileComposition(MultitapeTM& tm) {
 	tm.tapes = tapes;
 	tm.tapes_count = tapes_count;
+	tm.isSingleTaped = isSingleTaped;
 	runMachine();
 	while (isSuccesful()) {
 		tm.tapes = tapes;
@@ -263,12 +271,11 @@ void MultitapeTM::printSingleTapeVersion() {
 	std::cout << single_tape << std::endl;
 }
 
-void MultitapeTM::usersTapeChoice() {
+void MultitapeTM::usersTapeChoice(bool isGettingCreated) {
 	std::string choice;
-	std::cout << "Do you want to enter a custom tape or use the tape from first machine you loaded?\n";
-	std::cout << "1 - Enter custom tape\n";
-	std::cout << "2 - Use tape from first machine\n";
-	std::cout << "Your choice: ";
+	if (!isGettingCreated) {
+		printUsersChoices();
+	}
 
 	std::cin >> choice;
 	choice.erase(remove(choice.begin(), choice.end(), ' '), choice.end());

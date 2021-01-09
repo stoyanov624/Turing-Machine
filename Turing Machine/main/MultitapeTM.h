@@ -27,7 +27,7 @@ public:
 	void saveMachine();
 	void loadMachine();
 
-	void usersTapeChoice();
+	void usersTapeChoice(bool = false);
 	void toSingleTape();
 	void toMultiTape();
 };

@@ -200,12 +200,11 @@ void SingleTapeTM::whileComposition(SingleTapeTM& tm) {
 	tm.tape.saveTape(resultFile);
 }
 
-void SingleTapeTM::usersTapeChoice() {
+void SingleTapeTM::usersTapeChoice(bool isGettingCreated) {
 	std::string choice;
-	std::cout << "Do you want to enter a custom tape or use the tape from machine you loaded?\n";
-	std::cout << "1 - Enter custom tape\n";
-	std::cout << "2 - Use tape from first machine\n";
-	std::cout << "Your choice: ";
+	if (!isGettingCreated) {
+		printUsersChoices();
+	}
 	std::cin >> choice;
 	choice.erase(remove(choice.begin(), choice.end(), ' '), choice.end());
 	while (choice != "1" && choice != "2") {

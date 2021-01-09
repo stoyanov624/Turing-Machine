@@ -16,6 +16,7 @@ protected:
 	void loadInstructions(std::ifstream&);
 	const std::string getPathToWantedLoad();
 	void printFinalState() const;
+	void printUsersChoices() const;
 	unsigned getNumberOfTapesYouNeed();
 public:
 	void instructionDeserializer(const std::string&);
@@ -31,7 +32,7 @@ public:
 	void addTransition(const std::string&,const Transition&);
 	void goToStart();
 
-	virtual void usersTapeChoice() = 0;
+	virtual void usersTapeChoice(bool = false) = 0;
 	virtual void moveHeadToBeginning() = 0;
 	virtual void printTape() = 0;
 	virtual void saveMachine() = 0;

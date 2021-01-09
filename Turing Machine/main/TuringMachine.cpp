@@ -25,6 +25,13 @@ void TuringMachine::goToStart() {
 	current_state = "start";
 }
 
+void TuringMachine::printUsersChoices() const {
+	std::cout << "Do you want to enter a custom tape or use the tape from machine you loaded?\n";
+	std::cout << "1 - Enter custom tape\n";
+	std::cout << "2 - Use tape from first machine\n";
+	std::cout << "Your choice: ";
+}
+
 void TuringMachine::printFinalState() const {
 	if (current_state == "halt") {
 		std::cout << "\nMACHINE " << machine_ID << " HALTED!\n\n";

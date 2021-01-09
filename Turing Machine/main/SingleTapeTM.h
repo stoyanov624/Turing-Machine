@@ -24,7 +24,7 @@ public:
 	void printTape();
 	void loadMachine();
 
-	void usersTapeChoice();
+	void usersTapeChoice(bool = false);
 	void linearComposition(SingleTapeTM&);
 	void ifComposition(SingleTapeTM&, SingleTapeTM&);
 	void whileComposition(SingleTapeTM&);
