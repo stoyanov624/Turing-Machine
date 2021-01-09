@@ -1,0 +1,7 @@
+3435
+1
+{_}
+start
+111{start} -> 111{accept}HHH
+000{start} -> 000{reject}HHH
+___{start} -> ___{reject}LLL

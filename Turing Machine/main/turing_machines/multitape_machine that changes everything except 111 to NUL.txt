@@ -1,0 +1,11 @@
+100
+1
+{_}
+start
+000{start} -> NUL{halt}HHH
+100{start} -> NUL{halt}HHH
+010{start} -> NUL{halt}HHH
+001{start} -> NUL{halt}HHH
+110{start} -> NUL{halt}HHH
+101{start} -> NUL{halt}HHH
+011{start} -> NUL{halt}HHH

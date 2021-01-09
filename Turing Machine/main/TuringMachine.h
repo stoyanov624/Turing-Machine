@@ -12,15 +12,16 @@ protected:
 	int machine_ID;
 	std::string current_state;
 	std::map<std::string, std::vector<Transition>> instructions;
+
 	void saveInstructions(std::ofstream&);
 	void loadInstructions(std::ifstream&);
-	const std::string getPathToWantedLoad();
 	void printFinalState() const;
 	void printUsersChoices() const;
+	void giveUniqueID(std::string&);
+
+	const std::string getPathToWantedLoad();
 	unsigned getNumberOfTapesYouNeed();
 public:
-	void instructionDeserializer(const std::string&);
-	virtual void goToNextTransition() = 0;
 
 	TuringMachine();
 	TuringMachine(int, const std::map<std::string, std::vector<Transition>>&);
@@ -29,9 +30,12 @@ public:
 	int getID() const;
 	bool isSuccesful() const;
 	bool hasNoInstructions() const;
+
+	void instructionDeserializer(const std::string&);
 	void addTransition(const std::string&,const Transition&);
 	void goToStart();
 
+	virtual void goToNextTransition() = 0;
 	virtual void usersTapeChoice(bool = false) = 0;
 	virtual void moveHeadToBeginning() = 0;
 	virtual void printTape() = 0;

@@ -115,13 +115,13 @@ TEST_CASE("testing multitape linear composition") {
 	//tm.addTransition("q1", Transition("q1", "_0_", "_Y_", "HRH"));
 	//tm.addTransition("q1", Transition("halt", "___", "___", "LLL"));
 	//tm.usersTapeChoice();
-	//
+	//tm.saveMachine();
 	//MultitapeTM tm2(1111);
 	//tm2.addTransition("start", Transition("q1", "XYZ", "123", "RRR"));
 	//tm2.addTransition("q1", Transition("q1", "XYZ", "123", "RRR"));
 	//tm2.addTransition("q1", Transition("q1", "_Y_", "_2_", "HRH"));
 	//tm2.addTransition("q1", Transition("halt", "___", "___", "LLL"));
-	//
+	//tm.saveMachine();
 	//tm.linearComposition(tm2);
 	
 }
@@ -131,11 +131,12 @@ TEST_CASE("testing multitape while composition") {
 	//tm.addTransition("start", Transition("accept", "111", "111", "HHH"));
 	//tm.addTransition("start", Transition("reject", "000", "000", "HHH"));
 	//tm.addTransition("start", Transition("reject", "___", "___", "LLL"));
-	//tm.usersTapeChoice();
-	//
+	////tm.usersTapeChoice();
+	//tm.saveMachine();
 	//MultitapeTM tm2(1545);
 	//tm2.addTransition("start", Transition("halt", "111", "ONE", "RRR"));
-	////tm.toSingleTape();
+	//tm2.saveMachine();
+	//tm.toSingleTape();
 	//tm.whileComposition(tm2);
 }
 
@@ -154,9 +155,13 @@ TEST_CASE("testing multitape if composition") {
 	//tm0.addTransition("start", Transition("halt", "110", "NUL", "HHH"));
 	//tm0.addTransition("start", Transition("halt", "101", "NUL", "HHH"));
 	//tm0.addTransition("start", Transition("halt", "011", "NUL", "HHH"));
-	//
+	//tm.saveMachine();
+	//tm1.saveMachine();
+	//tm0.saveMachine();
 	//tm.usersTapeChoice();
 	//tm.ifComposition(tm1, tm0);
+
+	
 }
 
 void runTests() {

@@ -1,0 +1,10 @@
+3213
+1
+{_}
+start
+XYZ{start} -> 123{q1}RRR
+XYZ{start} -> 123{q1}RRR
+XYZ{q1} -> 123{q1}RRR
+XYZ{q1} -> 123{q1}RRR
+_Y_{q1} -> _2_{q1}HRH
+___{q1} -> ___{halt}LLL

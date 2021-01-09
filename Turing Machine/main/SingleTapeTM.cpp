@@ -56,7 +56,16 @@ void SingleTapeTM::moveHeadToBeginning() {
 }
 
 void SingleTapeTM::saveMachine() {
+
+	if (!fs::is_directory("turing_machines") || !fs::exists("turing_machines"))
+		fs::create_directory("turing_machines");
+
 	std::string machine_file_str = "turing_machines\\singletape_machine" + std::to_string(machine_ID) + ".txt";
+	while (fs::exists(machine_file_str)) {
+		machine_file_str = "turing_machines\\singletape_machine";
+		giveUniqueID(machine_file_str);
+	}
+
 	std::ofstream machineSaveFile(machine_file_str);
 	if (machineSaveFile.is_open()) {
 		machineSaveFile << machine_ID << "\n";
@@ -71,6 +80,9 @@ void SingleTapeTM::saveMachine() {
 }
 
 void SingleTapeTM::saveResult() const {
+	if (!fs::is_directory("results_from_machines") || !fs::exists("results_from_machines")) 
+		fs::create_directory("results_from_machines");
+	
 	std::string result_file_str = "results_from_machines\\result" + std::to_string(machine_ID) + ".txt";
 	std::ofstream resultFile(result_file_str);
 	if (resultFile.is_open()) {
@@ -80,7 +92,6 @@ void SingleTapeTM::saveResult() const {
 	else {
 		std::cout << "Error in opening machine resultfile!\n";
 	}
-	
 }
 
 void SingleTapeTM::runMachine() {
@@ -94,7 +105,8 @@ void SingleTapeTM::runMachine() {
 		goToNextTransition();
 	}
 	printFinalState();
-	saveResult();
+	if (isSuccesful()) 
+		saveResult();
 }
 
 const Tape& SingleTapeTM::getTape() const {
@@ -143,11 +155,13 @@ void SingleTapeTM::linearComposition(SingleTapeTM& second_tm) {
 		second_tm.tape = tape;
 		second_tm.runMachine();
 	}
+
+	if (!fs::is_directory("results_from_LC_machines") || !fs::exists("results_from_LC_machines"))
+		fs::create_directory("results_from_LC_machines");
 	
 	std::string result_file_str = "results_from_LC_machines\\LCresult" + std::to_string(machine_ID + second_tm.machine_ID) + ".txt";
 	std::ofstream resultFile(result_file_str);
 	second_tm.tape.saveTape(resultFile);
-	
 }
 
 void SingleTapeTM::ifComposition(SingleTapeTM& tm1, SingleTapeTM& tm0) {
@@ -169,6 +183,9 @@ void SingleTapeTM::ifComposition(SingleTapeTM& tm1, SingleTapeTM& tm0) {
 		tm0.runMachine();
 		we_ran_first_machine = false;
 	}
+
+	if (!fs::is_directory("results_from_Decider_machines") || !fs::exists("results_from_Decider_machines"))
+		fs::create_directory("results_from_Decider_machines");
 	
 	std::string result_file_str = "results_from_Decider_machines\\result"
 		+ std::to_string(machine_ID + tm1.machine_ID + tm0.machine_ID) + ".txt";
@@ -180,7 +197,6 @@ void SingleTapeTM::ifComposition(SingleTapeTM& tm1, SingleTapeTM& tm0) {
 		tm0.tape.saveTape(resultFile);
 	}
 }
-
 
 void SingleTapeTM::whileComposition(SingleTapeTM& tm) {
 	tm.tape = tape;
@@ -194,6 +210,9 @@ void SingleTapeTM::whileComposition(SingleTapeTM& tm) {
 		goToStart();
 		runMachine();
 	}
+
+	if (!fs::is_directory("results_from_While_machines") || !fs::exists("results_from_While_machines"))
+		fs::create_directory("results_from_Decider_machines");
 	
 	std::string result_file_str = "results_from_While_machines\\Whileresult" + std::to_string(machine_ID + tm.machine_ID) + ".txt";
 	std::ofstream resultFile(result_file_str);

@@ -24,18 +24,25 @@ void removeSpaces(std::string& sentence) {
 	sentence.erase(remove(sentence.begin(), sentence.end(), ' '), sentence.end());
 }
 
+void pauseAndClear() {
+	system("pause");
+	system("cls");
+}
+
 void runSingleTape() {
 	TuringMachine* tm = new SingleTapeTM();
 	tm->loadMachine();
 	if (tm->hasNoInstructions()) {
 		std::cout << "Error in loading :(\n\n";
+		return;
 	}
-	else {
-		tm->usersTapeChoice();
-		system("cls");
-		tm->runMachine();
-		delete tm;
-	}
+	
+	tm->usersTapeChoice();
+	system("cls");
+	tm->runMachine();
+	pauseAndClear();
+	
+	delete tm;
 }
 
 void runMultiTape() {
@@ -44,31 +51,32 @@ void runMultiTape() {
 	tm->loadMachine();
 	if (tm->hasNoInstructions()) {
 		std::cout << "Error in loading :(\n\n";
+		return;
 	}
-	else {
-		tm->usersTapeChoice();
-		system("cls");
-		std::cout << "Do you want to run the multitape machine in singletape version?\n";
-		std::cout << "1 - yes\n";
-		std::cout << "2 - no\n";
-		std::cout << "Enter choice: ";
+	
+	tm->usersTapeChoice();
+	system("cls");
+	std::cout << "Do you want to run the multitape machine in singletape version?\n";
+	std::cout << "1 - yes\n";
+	std::cout << "2 - no\n";
+	std::cout << "Enter choice: ";
 
+	std::cin >> singletape_choice;
+	removeSpaces(singletape_choice);
+
+	while (singletape_choice != "1" && singletape_choice != "2") {
+		std::cout << "Enter VALID choice: ";
 		std::cin >> singletape_choice;
 		removeSpaces(singletape_choice);
-
-		while (singletape_choice != "1" && singletape_choice != "2") {
-			std::cout << "Enter VALID choice: ";
-			std::cin >> singletape_choice;
-			removeSpaces(singletape_choice);
-		}
-
-		if (singletape_choice == "1") {
-			std::cout << "Setting up machine in singletape mode...\n";
-			tm->toSingleTape();
-		}
-		tm->runMachine();
-		delete tm;
 	}
+
+	if (singletape_choice == "1") {
+		std::cout << "Setting up machine in singletape mode...\n";
+		tm->toSingleTape();
+	}
+	tm->runMachine();
+	pauseAndClear();
+	delete tm;
 }
 
 template <typename Machine>
@@ -77,10 +85,17 @@ void runLinearComp() {
 	Machine tm2;
 	std::cout << "Load first singletape machine for linear composition!\n";
 	tm1.loadMachine();
+
+	if (tm1.hasNoInstructions()) {
+		std::cout << "Error in loading :(\n\n";
+		return;
+	}
+	
 	tm1.usersTapeChoice();
 	std::cout << "Load second singletape machine for linear composition!\n";
 	tm2.loadMachine();
 	tm1.linearComposition(tm2);
+	pauseAndClear();
 }
 
 template <typename Machine>
@@ -90,12 +105,19 @@ void runIfComp() {
 	Machine tm0;
 	std::cout << "Load decider singletape machine for if composition!\n";
 	decider.loadMachine();
+
+	if (decider.hasNoInstructions()) {
+		std::cout << "Error in loading :(\n\n";
+		return;
+	}
+
 	decider.usersTapeChoice();
 	std::cout << "Load truth singletape machine for if composition!\n";
 	tm1.loadMachine();
 	std::cout << "Load false singletape machine for if composition!\n";
 	tm0.loadMachine();
 	decider.ifComposition(tm1, tm0);
+	pauseAndClear();
 }
 
 template <typename Machine>
@@ -104,10 +126,17 @@ void runWhileComp() {
 	Machine doMachine;
 	std::cout << "Load while singletape machine for while composition!\n";
 	whileMachine.loadMachine();
+
+	if (whileMachine.hasNoInstructions()) {
+		std::cout << "Error in loading :(\n\n";
+		return;
+	}
+
 	whileMachine.usersTapeChoice();
 	std::cout << "Load do singletape machine for while composition!\n";
 	doMachine.loadMachine();
 	whileMachine.whileComposition(doMachine);
+	pauseAndClear();
 }
 
 template <typename Machine>

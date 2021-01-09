@@ -136,6 +136,25 @@ unsigned TuringMachine::getNumberOfTapesYouNeed()  {
 	return 0;
 }
 
+void TuringMachine::giveUniqueID(std::string& path) {
+	std::string id = "";
+	
+	std::cout << "A turing machine with ID  "<< machine_ID << " already exists!\n";
+	std::cout << "Enter a new number ID for your machine and make it unique!\n";
+	std::cout << "ID: ";
+	std::cin >> id;
+	id.erase(remove(id.begin(), id.end(), ' '), id.end());
+
+	while (id.find_first_not_of("0123456789") != std::string::npos) {
+		std::cout << "Id must have only numbers!\n";
+		std::cout << "Enter VALID ID: ";
+		std::cin >> id;
+		id.erase(remove(id.begin(), id.end(), ' '), id.end());
+	}
+	machine_ID = std::stoi(id);
+	path += id + ".txt";
+}
+
 bool TuringMachine::isSuccesful() const {
 	return current_state == "halt" || current_state == "accept";
 }

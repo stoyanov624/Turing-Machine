@@ -1,0 +1,5 @@
+456
+1
+{_}
+start
+111{start} -> 111{accept}HHH

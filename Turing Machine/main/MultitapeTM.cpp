@@ -61,13 +61,23 @@ void MultitapeTM::setTape(const std::vector<Tape*>& _tapes) {
 }
 
 void MultitapeTM::saveMachine() {
+
+	if (!fs::is_directory("turing_machines") || !fs::exists("turing_machines"))
+		fs::create_directory("turing_machines");
+
 	std::string machine_file_str = "turing_machines\\multitape_machine" + std::to_string(machine_ID) + ".txt";
+	while (fs::exists(machine_file_str)) {
+		machine_file_str = "turing_machines\\multitape_machine";
+		giveUniqueID(machine_file_str);
+	}
+
 	std::ofstream machineSaveFile(machine_file_str);
 	machineSaveFile << machine_ID << "\n";
 	machineSaveFile << tapes_count << "\n";
 	for (unsigned i = 0; i < tapes_count; i++) {
 		tapes[i]->saveTape(machineSaveFile);
 	}
+
 	machineSaveFile << current_state << "\n";
 	saveInstructions(machineSaveFile);
 }
@@ -78,7 +88,7 @@ void MultitapeTM::loadMachine() {
 		return;
 
 	if (path[path.find('\\') + 1] != 'm') {
-		std::cout << "Tryng to load a singletape machine! That won't work well!\n";
+		std::cout << "Trying to load a singletape machine! That won't work well!\n";
 		return;
 	}
 	std::ifstream in(path);
@@ -115,6 +125,9 @@ void MultitapeTM::linearComposition(MultitapeTM& second_tm) {
 		return;
 	}
 
+	if (!fs::is_directory("results_from_LC_machines") || !fs::exists("results_from_LC_machines"))
+		fs::create_directory("results_from_LC_machines");
+
 	std::string result_file_str = "results_from_LC_machines\\LCresult" + std::to_string(machine_ID + second_tm.machine_ID) + ".txt";
 	std::ofstream resultFile(result_file_str);
 	for (unsigned i = 0; i < tapes_count; i++) {
@@ -143,6 +156,9 @@ void MultitapeTM::ifComposition(MultitapeTM& tm1, MultitapeTM& tm0) {
 		first_machine_ran = false;
 	}
 
+	if (!fs::is_directory("results_from_Decider_machines") || !fs::exists("results_from_Decider_machines"))
+		fs::create_directory("results_from_Decider_machines");
+
 	std::string result_file_str = "results_from_Decider_machines\\result" 
 									+ std::to_string(machine_ID + tm1.machine_ID + tm0.machine_ID) + ".txt";
 	std::ofstream resultFile(result_file_str);
@@ -170,6 +186,9 @@ void MultitapeTM::whileComposition(MultitapeTM& tm) {
 		goToStart();
 		runMachine();
 	}
+
+	if (!fs::is_directory("results_from_While_machines") || !fs::exists("results_from_While_machines"))
+		fs::create_directory("results_from_While_machines");
 
 	std::string result_file_str = "results_from_While_machines\\Whileresult" + std::to_string(machine_ID + tm.machine_ID) + ".txt";
 	std::ofstream resultFile(result_file_str);
@@ -202,6 +221,11 @@ void MultitapeTM::runMachine() {
 	
 	if(isSuccesful())
 		saveResult();
+
+	std::cin.ignore();
+	std::cout << "Press any key to continue!";
+	std::cin.ignore();
+	system("cls");
 }
 
 void MultitapeTM::goToNextTransition() {
@@ -272,7 +296,7 @@ void MultitapeTM::printSingleTapeVersion() {
 }
 
 void MultitapeTM::usersTapeChoice(bool isGettingCreated) {
-	std::string choice;
+	std::string choice = "";
 	if (!isGettingCreated) {
 		printUsersChoices();
 	}
