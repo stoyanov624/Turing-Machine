@@ -2,13 +2,13 @@
 
 SingleTapeTM::SingleTapeTM() :TuringMachine() {}
 
-SingleTapeTM::SingleTapeTM(const Tape& other_tm_tape,
-	const std::map<std::string, std::vector<Transition>>& other_instructions) : TuringMachine(other_instructions) {
+SingleTapeTM::SingleTapeTM(int _machine_ID,const Tape& other_tm_tape,
+	const std::map<std::string, std::vector<Transition>>& other_instructions) : TuringMachine(_machine_ID,other_instructions) {
 	tape = other_tm_tape;
 }
 
-SingleTapeTM::SingleTapeTM(const std::string& tape_str,
-	const std::map<std::string, std::vector<Transition>>& other_instructions) : TuringMachine(other_instructions) {
+SingleTapeTM::SingleTapeTM(int _machine_ID, const std::string& tape_str,
+	const std::map<std::string, std::vector<Transition>>& other_instructions) : TuringMachine(_machine_ID, other_instructions) {
 	tape.initializeTape(tape_str);
 }
 
@@ -88,6 +88,7 @@ void SingleTapeTM::runMachine() {
 		std::cout << "Can't start the machine with no instructions!\n";
 		return;
 	}
+	goToStart();
 	tape.show_tape();
 	while (current_state != "halt" && current_state != "reject" && current_state != "accept") {
 		goToNextTransition();
@@ -220,7 +221,7 @@ void SingleTapeTM::usersTapeChoice() {
 		std::cout << std::endl;
 	}
 	else {
-		std::cout << "Okay we will use the tape from the machine you loaded\n!";
+		std::cout << "Okay we will use the tape from the machine you loaded!\n";
 		return;
 	}
 }

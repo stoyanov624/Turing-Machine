@@ -9,7 +9,7 @@ private:
 	void printSingleTapeVersion();
 public:
 	MultitapeTM();
-	MultitapeTM(const std::vector<Tape*>&, const std::map<std::string, std::vector<Transition>>&);
+	MultitapeTM(int, const std::vector<Tape*>& = std::vector<Tape*>(), const std::map<std::string, std::vector<Transition>>& = std::map<std::string, std::vector<Transition>>());
 	MultitapeTM& operator=(const MultitapeTM&);
 
 	const std::vector<Tape*>& getTape();

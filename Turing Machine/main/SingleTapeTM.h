@@ -6,13 +6,12 @@ class SingleTapeTM : public TuringMachine
 private:
 	Tape tape;
 	void goToNextTransition();
-
 	void toSingleTape();
 	void toMultiTape();
 public:
 	SingleTapeTM();
-	SingleTapeTM(const Tape&, const std::map<std::string, std::vector<Transition>>& = std::map<std::string, std::vector<Transition>>());
-	SingleTapeTM(const std::string&, const std::map<std::string, std::vector<Transition>>&);
+	SingleTapeTM(int, const Tape & = Tape() , const std::map<std::string, std::vector<Transition>> & = std::map<std::string, std::vector<Transition>>());
+	SingleTapeTM(int, const std::string&, const std::map<std::string, std::vector<Transition>>& = std::map<std::string, std::vector<Transition>>());
 	SingleTapeTM& operator=(const SingleTapeTM&);
 
 	void moveHeadToBeginning();

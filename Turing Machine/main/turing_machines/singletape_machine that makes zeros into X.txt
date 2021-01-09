@@ -1,0 +1,8 @@
+745
+{_}
+halt
+0{start} -> X{q1}R
+1{start} -> 1{q1}R
+0{q1} -> X{q1}R
+1{q1} -> 1{q1}R
+_{q1} -> _{halt}L

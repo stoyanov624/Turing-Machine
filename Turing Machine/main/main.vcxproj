@@ -165,6 +165,7 @@
     <ClInclude Include="MultitapeTM.h" />
     <ClInclude Include="SingleTapeTM.h" />
     <ClInclude Include="Tape.h" />
+    <ClInclude Include="tests.h" />
     <ClInclude Include="Transition.h" />
     <ClInclude Include="TuringMachine.h" />
     <ClInclude Include="userInterface.h" />

@@ -1,15 +1,14 @@
 #include "TuringMachine.h"
-int TuringMachine::machine_ID_generator = 1000;
 
 TuringMachine::TuringMachine() {
 	current_state = "start";
-	machine_ID = machine_ID_generator++;
+	machine_ID = 0;
 }
 
-TuringMachine::TuringMachine(const std::map<std::string, std::vector<Transition>>& other_instructions) {
+TuringMachine::TuringMachine(int _machine_ID,const std::map<std::string, std::vector<Transition>>& other_instructions) {
 	current_state = "start";
 	instructions = other_instructions;
-	machine_ID = machine_ID_generator++;
+	machine_ID = _machine_ID;
 }
 
 TuringMachine& TuringMachine::operator=(const TuringMachine& other_tm) {
@@ -110,14 +109,24 @@ void TuringMachine::loadInstructions(std::ifstream& in) {
 
 void TuringMachine::addTransition(const std::string& key_to_transition,const Transition& transition) {
 	for (auto t : instructions[key_to_transition]) {
-		if (t == transition) 
+		if (t == transition || !transition.isValid() || !transition.canWorkWith(t)) {
+			std::cout << "Transition " << transition.getCurrentTransition() << " you tried to add is INVALID!\n";
 			return;
+		}
 	}
 	instructions[key_to_transition].push_back(transition);
 }
 
 int TuringMachine::getID() const {
 	return machine_ID;
+}
+
+unsigned TuringMachine::getNumberOfTapesYouNeed()  {
+	for (auto t : instructions["start"]) {
+		return t.getCurrentCell().length();
+	}
+
+	return 0;
 }
 
 bool TuringMachine::isSuccesful() const {
@@ -128,6 +137,3 @@ bool TuringMachine::hasNoInstructions() const {
 	return instructions.empty();
 }
 
-TuringMachine::~TuringMachine() {
-	machine_ID_generator--;
-}

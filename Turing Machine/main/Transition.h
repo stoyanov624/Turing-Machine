@@ -19,5 +19,7 @@ public:
 	void setCurrentCell(const std::string&);
 	void setChangeCell(const std::string&);
 	void setMoveDirection(const std::string&);
+	bool isValid() const;
+	bool canWorkWith(const Transition&) const;
 };
 

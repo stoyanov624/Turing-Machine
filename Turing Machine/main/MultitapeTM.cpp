@@ -6,9 +6,16 @@ MultitapeTM::MultitapeTM() : TuringMachine() {
 	isSingleTaped = false;
 }
 
-MultitapeTM::MultitapeTM(const std::vector<Tape*>& _tapes, const std::map<std::string, std::vector<Transition>>& _instructions) : TuringMachine(_instructions) {
-	tapes = _tapes;
-	tapes_count = tapes.size();
+MultitapeTM::MultitapeTM(int _machine_ID, const std::vector<Tape*>& _tapes, const std::map<std::string, std::vector<Transition>>& _instructions) : TuringMachine(_machine_ID,_instructions) {
+	if (!_tapes.empty()) {
+		tapes = _tapes;
+		tapes_count = tapes.size();
+	}
+	else {
+		tapes.push_back(new Tape());
+		tapes_count = 1;
+	}
+	
 	isSingleTaped = false;
 }
 
@@ -99,6 +106,7 @@ void MultitapeTM::linearComposition(MultitapeTM& second_tm) {
 	if (isSuccesful()) {
 		moveHeadToBeginning();
 		second_tm.tapes = tapes;
+		second_tm.tapes_count = tapes_count;
 		second_tm.runMachine();
 	}
 
@@ -115,12 +123,14 @@ void MultitapeTM::ifComposition(MultitapeTM& tm1, MultitapeTM& tm0) {
 	runMachine();
 	if (isSuccesful()) {
 		tm1.tapes = saveTape;
+		tm1.tapes_count = tapes_count;
 		tm1.moveHeadToBeginning();
 		tm1.runMachine();
 
 	}
 	else {
 		tm0.tapes = saveTape;
+		tm0.tapes_count = tapes_count;
 		tm0.moveHeadToBeginning();
 		tm0.runMachine();
 		first_machine_ran = false;
@@ -141,6 +151,7 @@ void MultitapeTM::ifComposition(MultitapeTM& tm1, MultitapeTM& tm0) {
 
 void MultitapeTM::whileComposition(MultitapeTM& tm) {
 	tm.tapes = tapes;
+	tm.tapes_count = tapes_count;
 	runMachine();
 	while (isSuccesful()) {
 		tm.tapes = tapes;
@@ -164,12 +175,18 @@ void MultitapeTM::runMachine() {
 		std::cout << "Can't start the machine with no instructions!\n";
 		return;
 	}
+
+	if (tapes.empty()) {
+		std::cout << "Can't start the machine with no tapes!\n";
+		return;
+	}
 	if (isSingleTaped) {
 		printSingleTapeVersion();
 	}
 	else {
 		printTape();
 	}
+	goToStart();
 	while (current_state != "halt" && current_state != "reject" && current_state != "accept") {
 		goToNextTransition();
 	}
@@ -262,17 +279,7 @@ void MultitapeTM::usersTapeChoice() {
 	}
 	
 	if (choice == "1") {
-		std::cout << "Enter number of tapes you want: ";
-		std::cin >> choice;
-		choice.erase(remove(choice.begin(), choice.end(), ' '), choice.end());
-
-		while (choice.find_first_not_of("0123456789") != std::string::npos) {
-			std::cout << "Enter VALID number of tapes: ";
-			std::cin >> choice;
-			choice.erase(remove(choice.begin(), choice.end(), ' '), choice.end());
-		}
-
-		tapes_count = std::stoi(choice);
+		tapes_count = getNumberOfTapesYouNeed();
 		tapes.clear();
 		for (unsigned i = 0; i < tapes_count; i++) {
 			std::cout << "Enter tape " << i + 1 << ": ";
@@ -283,7 +290,7 @@ void MultitapeTM::usersTapeChoice() {
 		std::cout << std::endl;
 	}
 	else {
-		std::cout << "Okay we will use the tape from the machine you loaded\n!";
+		std::cout << "Okay we will use the tape from the machine you loaded!\n";
 		return;
 	}
 }

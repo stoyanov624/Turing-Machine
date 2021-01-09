@@ -1,0 +1,11 @@
+1233
+{0}11010
+start
+_{start} -> _{reject}H
+1{start} -> 1{q1}R
+0{start} -> 0{q1}R
+0{q2} -> 0{reject}H
+1{q2} -> 1{accept}H
+1{q1} -> 1{q1}R
+0{q1} -> 0{q1}R
+_{q1} -> _{q2}L

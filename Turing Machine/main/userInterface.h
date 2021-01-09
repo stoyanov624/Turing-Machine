@@ -63,6 +63,76 @@ void runMultiTape() {
 	}
 }
 
+template <typename Machine>
+void runLinearComp() {
+	Machine tm1;
+	Machine tm2;
+	std::cout << "Load first singletape machine for linear composition!\n";
+	tm1.loadMachine();
+	tm1.usersTapeChoice();
+	std::cout << "Load second singletape machine for linear composition!\n";
+	tm2.loadMachine();
+	tm1.linearComposition(tm2);
+}
+
+template <typename Machine>
+void runIfComp() {
+	Machine decider;
+	Machine tm1;
+	Machine tm0;
+	std::cout << "Load decider singletape machine for if composition!\n";
+	decider.loadMachine();
+	decider.usersTapeChoice();
+	std::cout << "Load truth singletape machine for if composition!\n";
+	tm1.loadMachine();
+	std::cout << "Load false singletape machine for if composition!\n";
+	tm0.loadMachine();
+	decider.ifComposition(tm1, tm0);
+}
+
+template <typename Machine>
+void runWhileComp() {
+	Machine whileMachine;
+	Machine doMachine;
+	std::cout << "Load while singletape machine for while composition!\n";
+	whileMachine.loadMachine();
+	whileMachine.usersTapeChoice();
+	std::cout << "Load do singletape machine for while composition!\n";
+	doMachine.loadMachine();
+	whileMachine.whileComposition(doMachine);
+}
+
+void printCompositionOptions() {
+	std::cout << "What composition do you want to run?\n";
+	std::cout << "1 - Linear composition\n";
+	std::cout << "2 - If/Decider composition\n";
+	std::cout << "3 - While composition\n";
+	std::cout << "Enter choice: ";
+}
+
+template <typename Machine>
+void runCompositions() {
+	std::string command;
+	printCompositionOptions();
+	std::cin >> command;
+	removeSpaces(command);
+	while (command != "1" && command != "2" && command != "3") {
+		std::cout << "Enter VALID choice: ";
+		std::cin >> command;
+		removeSpaces(command);
+	}
+	
+	if (command == "1") {
+		runLinearComp<Machine>();
+	}
+	else if (command == "2") {
+		runIfComp<Machine>();
+	}
+	else if (command == "3") {
+		runWhileComp<Machine>();
+	}
+}
+
 void RUN() {
 	std::string command;
 
@@ -85,15 +155,13 @@ void RUN() {
 			runMultiTape();
 		}
 		else if (command == "3") {
-
-			
+			runCompositions<SingleTapeTM>();
 		}
 		else if (command == "4") {
-
+			runCompositions<MultitapeTM>();
 		}
 		else {
 			std::cout << "INVALID COMMAND!\n\n";
 		}
-
 	}
 }

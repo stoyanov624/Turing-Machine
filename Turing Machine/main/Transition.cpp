@@ -43,3 +43,15 @@ void Transition::setChangeCell(const std::string& _change_cell) {
 void Transition::setMoveDirection(const std::string& _move_direction) {
 	move_direction = _move_direction;
 }
+
+bool Transition::isValid() const {
+	return current_cell.length() == change_cell.length()
+		&& current_cell.length() == move_direction.length()
+		&& change_cell.length() == move_direction.length();
+}
+
+bool Transition::canWorkWith(const Transition& other) const {
+	return current_cell.length() == other.change_cell.length()
+		&& current_cell.length() == other.move_direction.length()
+		&& change_cell.length() == other.move_direction.length();
+}

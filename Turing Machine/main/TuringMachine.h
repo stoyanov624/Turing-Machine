@@ -9,7 +9,6 @@ namespace fs = std::filesystem;
 class TuringMachine
 {
 protected:
-	static int machine_ID_generator;
 	int machine_ID;
 	std::string current_state;
 	std::map<std::string, std::vector<Transition>> instructions;
@@ -17,21 +16,21 @@ protected:
 	void loadInstructions(std::ifstream&);
 	const std::string getPathToWantedLoad();
 	void printFinalState() const;
-	
-private:
+	unsigned getNumberOfTapesYouNeed();
+public:
 	void instructionDeserializer(const std::string&);
 	virtual void goToNextTransition() = 0;
-public:
+
 	TuringMachine();
-	TuringMachine(const std::map<std::string, std::vector<Transition>>&);
+	TuringMachine(int, const std::map<std::string, std::vector<Transition>>&);
 	TuringMachine& operator=(const TuringMachine&);
-public:
+
 	int getID() const;
 	bool isSuccesful() const;
 	bool hasNoInstructions() const;
 	void addTransition(const std::string&,const Transition&);
 	void goToStart();
-public:
+
 	virtual void usersTapeChoice() = 0;
 	virtual void moveHeadToBeginning() = 0;
 	virtual void printTape() = 0;
@@ -41,6 +40,5 @@ public:
 	virtual void runMachine() = 0;
 	virtual void toSingleTape() = 0;
 	virtual void toMultiTape() = 0;
-	virtual ~TuringMachine();
 };
 
