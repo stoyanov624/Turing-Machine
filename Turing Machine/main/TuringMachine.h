@@ -21,6 +21,7 @@ protected:
 
 	const std::string getPathToWantedLoad();
 	unsigned getNumberOfTapesYouNeed();
+	virtual bool isSingleTapeMachine() const = 0;
 public:
 
 	TuringMachine();
@@ -34,6 +35,7 @@ public:
 	void instructionDeserializer(const std::string&);
 	void addTransition(const std::string&,const Transition&);
 	void goToStart();
+	void setCustomID();
 
 	virtual void goToNextTransition() = 0;
 	virtual void usersTapeChoice(bool = false) = 0;

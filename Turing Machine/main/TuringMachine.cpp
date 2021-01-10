@@ -54,6 +54,9 @@ void TuringMachine::saveInstructions(std::ofstream& out) {
 }
 
 const std::string TuringMachine::getPathToWantedLoad() {
+	// this will show us every turing machine 
+	// we ever created in a folder called turing machines
+	// later we can pick which machine to choose
 	std::string path = "turing_machines";
 	unsigned number = 1;
 	std::vector<std::string> filenames;
@@ -116,19 +119,35 @@ void TuringMachine::loadInstructions(std::ifstream& in) {
 
 void TuringMachine::addTransition(const std::string& key_to_transition,const Transition& transition) {
 	for (auto t : instructions[key_to_transition]) {
+		//this is mainly for the multitapeturingMachine because
+		//we want the number of cells we are checking to be equal 
+		//to the number of tapes we have
 		if (t == transition || !transition.isValid() || !transition.canWorkWith(t)) {
-			std::cout << "Transition " << transition.getCurrentTransition() << " you tried to add is INVALID!\n";
+			std::cout << "Transition you tried to add is INVALID!\n";
+			return;
+		}
+		//this is for singletape, we have to make sure
+		//if we are adding a transition to a single tape machine that 
+		//the number of cells for we are checking for example is exactly 1
+		if (isSingleTapeMachine() && !transition.isGoodForSingleTape()) {
+			std::cout << "Transition you tried to add is INVALID!\n";
 			return;
 		}
 	}
+
+	if ((isSingleTapeMachine() && !transition.isGoodForSingleTape()) || !transition.isValid()) {
+		std::cout << "Transition you tried to add is INVALID!\n";
+		return;
+	}
+
 	instructions[key_to_transition].push_back(transition);
 }
 
 int TuringMachine::getID() const {
 	return machine_ID;
 }
-
-unsigned TuringMachine::getNumberOfTapesYouNeed()  {
+// We use this to determine the exact amount of tapes from MultitapeMachine the user needs
+unsigned TuringMachine::getNumberOfTapesYouNeed()  { 
 	for (auto t : instructions["start"]) {
 		return t.getCurrentCell().length();
 	}
@@ -136,11 +155,8 @@ unsigned TuringMachine::getNumberOfTapesYouNeed()  {
 	return 0;
 }
 
-void TuringMachine::giveUniqueID(std::string& path) {
+void TuringMachine::setCustomID() {
 	std::string id = "";
-	
-	std::cout << "A turing machine with ID  "<< machine_ID << " already exists!\n";
-	std::cout << "Enter a new number ID for your machine and make it unique!\n";
 	std::cout << "ID: ";
 	std::cin >> id;
 	id.erase(remove(id.begin(), id.end(), ' '), id.end());
@@ -152,7 +168,14 @@ void TuringMachine::giveUniqueID(std::string& path) {
 		id.erase(remove(id.begin(), id.end(), ' '), id.end());
 	}
 	machine_ID = std::stoi(id);
-	path += id + ".txt";
+}
+
+void TuringMachine::giveUniqueID(std::string& path) {
+	
+	std::cout << "A turing machine with ID  "<< machine_ID << " already exists!\n";
+	std::cout << "Enter a new number ID for your machine and make it unique!\n";
+	setCustomID();
+	path += std::to_string(machine_ID) + ".txt";
 }
 
 bool TuringMachine::isSuccesful() const {

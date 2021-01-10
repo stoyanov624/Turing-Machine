@@ -44,6 +44,10 @@ void Transition::setMoveDirection(const std::string& _move_direction) {
 	move_direction = _move_direction;
 }
 
+void Transition::setCurrentTransition(const std::string& _current_transition) {
+	current_t = _current_transition;
+}
+
 bool Transition::isValid() const {
 	return current_cell.length() == change_cell.length()
 		&& current_cell.length() == move_direction.length()
@@ -51,7 +55,14 @@ bool Transition::isValid() const {
 }
 
 bool Transition::canWorkWith(const Transition& other) const {
-	return current_cell.length() == other.change_cell.length()
-		&& current_cell.length() == other.move_direction.length()
-		&& change_cell.length() == other.move_direction.length();
+	return isValid() && other.isValid() &&
+		current_cell.length() == other.current_cell.length()
+		&& change_cell.length() == other.change_cell.length()
+		&& move_direction.length() == other.move_direction.length();
+}
+
+bool Transition::isGoodForSingleTape() const {
+	return current_cell.length() == 1
+			&& change_cell.length() == 1 
+			&& move_direction.length() == 1;
 }

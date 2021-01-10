@@ -28,5 +28,6 @@ public:
 	void linearComposition(SingleTapeTM&);
 	void ifComposition(SingleTapeTM&, SingleTapeTM&);
 	void whileComposition(SingleTapeTM&);
+	bool isSingleTapeMachine() const;
 };
 

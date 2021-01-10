@@ -56,10 +56,10 @@ void SingleTapeTM::moveHeadToBeginning() {
 }
 
 void SingleTapeTM::saveMachine() {
-
+	//Making sure folder exists
 	if (!fs::is_directory("turing_machines") || !fs::exists("turing_machines"))
 		fs::create_directory("turing_machines");
-
+	//Making sure machine is unique
 	std::string machine_file_str = "turing_machines\\singletape_machine" + std::to_string(machine_ID) + ".txt";
 	while (fs::exists(machine_file_str)) {
 		machine_file_str = "turing_machines\\singletape_machine";
@@ -221,9 +221,16 @@ void SingleTapeTM::whileComposition(SingleTapeTM& tm) {
 
 void SingleTapeTM::usersTapeChoice(bool isGettingCreated) {
 	std::string choice;
-	if (!isGettingCreated) {
-		printUsersChoices();
+
+	if (isGettingCreated) {
+		std::cout << "Enter tape: ";
+		std::cin >> choice;
+		tape.initializeTape(choice);
+		std::cout << std::endl;
+		return;
 	}
+
+	printUsersChoices();
 	std::cin >> choice;
 	choice.erase(remove(choice.begin(), choice.end(), ' '), choice.end());
 	while (choice != "1" && choice != "2") {
@@ -242,6 +249,10 @@ void SingleTapeTM::usersTapeChoice(bool isGettingCreated) {
 		std::cout << "Okay we will use the tape from the machine you loaded!\n";
 		return;
 	}
+}
+
+bool SingleTapeTM::isSingleTapeMachine() const {
+	return false;
 }
 
 void SingleTapeTM::toSingleTape() {}

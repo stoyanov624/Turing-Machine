@@ -7,6 +7,7 @@ MultitapeTM::MultitapeTM() : TuringMachine() {
 }
 
 MultitapeTM::MultitapeTM(int _machine_ID, const std::vector<Tape*>& _tapes, const std::map<std::string, std::vector<Transition>>& _instructions) : TuringMachine(_machine_ID,_instructions) {
+	//this makes sure we always have atleast one tape to work with.
 	if (!_tapes.empty()) {
 		tapes = _tapes;
 		tapes_count = tapes.size();
@@ -86,7 +87,9 @@ void MultitapeTM::loadMachine() {
 	std::string path = getPathToWantedLoad();
 	if (path == "") 
 		return;
-
+	// because we keep singletape turing machines and multitape 
+	//turing machines in the same folder I am making sure someone 
+	//doesn't load a singleTape TM for a multiTape one
 	if (path[path.find('\\') + 1] != 'm') {
 		std::cout << "Trying to load a singletape machine! That won't work well!\n";
 		return;
@@ -221,14 +224,11 @@ void MultitapeTM::runMachine() {
 	
 	if(isSuccesful())
 		saveResult();
-
-	std::cin.ignore();
-	std::cout << "Press any key to continue!";
-	std::cin.ignore();
-	system("cls");
 }
 
 void MultitapeTM::goToNextTransition() {
+	// we are looking for a transition that can go to 
+	//another state if the head is looking at the correct elements on the correct tapes
 	bool is_good_transition = true;
 	Transition good_transition;
 	for (auto t : instructions[current_state]) {
@@ -297,10 +297,19 @@ void MultitapeTM::printSingleTapeVersion() {
 
 void MultitapeTM::usersTapeChoice(bool isGettingCreated) {
 	std::string choice = "";
-	if (!isGettingCreated) {
-		printUsersChoices();
+	if (isGettingCreated) {
+		tapes_count = getNumberOfTapesYouNeed();
+		tapes.clear();
+		for (unsigned i = 0; i < tapes_count; i++) {
+			std::cout << "Enter tape " << i + 1 << ": ";
+			std::cin >> choice;
+			tapes.push_back(new Tape());
+			tapes[i]->initializeTape(choice);
+		}
+		std::cout << std::endl;
+		return;
 	}
-
+	printUsersChoices();
 	std::cin >> choice;
 	choice.erase(remove(choice.begin(), choice.end(), ' '), choice.end());
 	while (choice != "1" && choice != "2") {
@@ -324,4 +333,8 @@ void MultitapeTM::usersTapeChoice(bool isGettingCreated) {
 		std::cout << "Okay we will use the tape from the machine you loaded!\n";
 		return;
 	}
+}
+
+bool MultitapeTM::isSingleTapeMachine() const {
+	return false;
 }
