@@ -25,13 +25,6 @@ void TuringMachine::goToStart() {
 	current_state = "start";
 }
 
-void TuringMachine::printUsersChoices() const {
-	std::cout << "Do you want to enter a custom tape or use the tape from machine you loaded?\n";
-	std::cout << "1 - Enter custom tape\n";
-	std::cout << "2 - Use tape from first machine\n";
-	std::cout << "Your choice: ";
-}
-
 void TuringMachine::printFinalState() const {
 	if (current_state == "halt") {
 		std::cout << "\nMACHINE " << machine_ID << " HALTED!\n\n";
@@ -57,29 +50,17 @@ const std::string TuringMachine::getPathToWantedLoad() {
 	// this will show us every turing machine 
 	// we ever created in a folder called turing machines
 	// later we can pick which machine to choose
-	std::string path = "turing_machines";
-	unsigned number = 1;
-	std::vector<std::string> filenames;
-
+	std::string path = "turing_machines\\";
+	Menu menu;
 	for (const auto& entry : fs::directory_iterator(path)) {
-		filenames.push_back(entry.path().string());
-		std::cout << number << " - " << entry.path().filename() << std::endl;
-		number++;
+		menu.addChoice(entry.path().filename().string());
 	}
-	if (number == 1) {
-		std::cout << "No turing machines saved for you to load!\n";
+	
+	if (menu.hasNoItems()) {
 		return "";
 	}
-	std::cout << "Enter number: ";
-	std::cin >> number;
-	std::cout << std::endl;
 
-	while (number <= 0 || number > filenames.size()) {
-		std::cout << "Enter VALID number: ";
-		std::cin >> number;
-	}
-	path = filenames[number - 1];
-	return path;
+	return path + menu.getChoice();
 }
 
 void TuringMachine::instructionDeserializer(const std::string& input) {
@@ -124,6 +105,7 @@ void TuringMachine::addTransition(const std::string& key_to_transition,const Tra
 		//to the number of tapes we have
 		if (t == transition || !transition.isValid() || !transition.canWorkWith(t)) {
 			std::cout << "Transition you tried to add is INVALID!\n";
+			system("pause");
 			return;
 		}
 		//this is for singletape, we have to make sure
@@ -131,12 +113,14 @@ void TuringMachine::addTransition(const std::string& key_to_transition,const Tra
 		//the number of cells for we are checking for example is exactly 1
 		if (isSingleTapeMachine() && !transition.isGoodForSingleTape()) {
 			std::cout << "Transition you tried to add is INVALID!\n";
+			system("pause");
 			return;
 		}
 	}
 
 	if ((isSingleTapeMachine() && !transition.isGoodForSingleTape()) || !transition.isValid()) {
 		std::cout << "Transition you tried to add is INVALID!\n";
+		system("pause");
 		return;
 	}
 

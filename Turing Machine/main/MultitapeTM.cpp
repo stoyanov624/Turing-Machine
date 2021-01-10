@@ -84,9 +84,16 @@ void MultitapeTM::saveMachine() {
 }
 
 void MultitapeTM::loadMachine() {
+
+	if (!fs::is_directory("turing_machines") || !fs::exists("turing_machines"))
+		fs::create_directory("turing_machines");
+
 	std::string path = getPathToWantedLoad();
-	if (path == "") 
+
+	if (path == "") {
+		std::cout << "No machine to load! Folder empty!\n";
 		return;
+	}
 	// because we keep singletape turing machines and multitape 
 	//turing machines in the same folder I am making sure someone 
 	//doesn't load a singleTape TM for a multiTape one
@@ -158,7 +165,7 @@ void MultitapeTM::ifComposition(MultitapeTM& tm1, MultitapeTM& tm0) {
 		tm0.runMachine();
 		first_machine_ran = false;
 	}
-
+   
 	if (!fs::is_directory("results_from_Decider_machines") || !fs::exists("results_from_Decider_machines"))
 		fs::create_directory("results_from_Decider_machines");
 
@@ -309,16 +316,13 @@ void MultitapeTM::usersTapeChoice(bool isGettingCreated) {
 		std::cout << std::endl;
 		return;
 	}
-	printUsersChoices();
-	std::cin >> choice;
-	choice.erase(remove(choice.begin(), choice.end(), ' '), choice.end());
-	while (choice != "1" && choice != "2") {
-		std::cout << "Enter VALID number: ";
-		std::cin >> choice;
-		choice.erase(remove(choice.begin(), choice.end(), ' '), choice.end());
-	}
-	
-	if (choice == "1") {
+	Menu menu;
+	menu.addChoice("Enter custom tapes");
+	menu.addChoice("Use tapes from machine you loaded");
+
+	switch (menu.getIndexChoice()) {
+	case 0:
+		system("cls");
 		tapes_count = getNumberOfTapesYouNeed();
 		tapes.clear();
 		for (unsigned i = 0; i < tapes_count; i++) {
@@ -328,11 +332,13 @@ void MultitapeTM::usersTapeChoice(bool isGettingCreated) {
 			tapes[i]->initializeTape(choice);
 		}
 		std::cout << std::endl;
-	}
-	else {
-		std::cout << "Okay we will use the tape from the machine you loaded!\n";
 		return;
 	}
+	system("cls");
+	std::cout << "Okay we will use the tape from the machine you loaded!\n";
+	system("pause");
+	return;
+	
 }
 
 bool MultitapeTM::isSingleTapeMachine() const {

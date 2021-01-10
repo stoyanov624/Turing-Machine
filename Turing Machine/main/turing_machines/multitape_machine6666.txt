@@ -1,0 +1,7 @@
+6666
+3
+{a}00
+{b}00
+{c}00
+start
+abc{start} -> ABC{halt}LLL

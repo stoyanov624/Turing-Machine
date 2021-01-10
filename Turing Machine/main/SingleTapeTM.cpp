@@ -122,12 +122,17 @@ void SingleTapeTM::printTape() {
 }
 
 void SingleTapeTM::loadMachine() {
+	if (!fs::is_directory("turing_machines") || !fs::exists("turing_machines"))
+		fs::create_directory("turing_machines");
+
 	std::string path = getPathToWantedLoad();
-	if (path == "")
+	if (path == "") {
+		std::cout << "No machine to load! Folder empty!\n";
 		return;
+	}
 
 	if (path[path.find('\\') + 1] != 's') {
-		std::cout << "Tryng to load a multitape machine! That won't work well!\n";
+		std::cout << "Trying to load a multitape machine! That won't work well!\n";
 		return;
 	}
 
@@ -229,30 +234,27 @@ void SingleTapeTM::usersTapeChoice(bool isGettingCreated) {
 		std::cout << std::endl;
 		return;
 	}
+	Menu menu;
+	menu.addChoice("Enter custom tape");
+	menu.addChoice("Use tape from machine you loaded");
 
-	printUsersChoices();
-	std::cin >> choice;
-	choice.erase(remove(choice.begin(), choice.end(), ' '), choice.end());
-	while (choice != "1" && choice != "2") {
-		std::cout << "Enter VALID number: ";
-		std::cin >> choice;
-		choice.erase(remove(choice.begin(), choice.end(), ' '), choice.end());
-	}
-
-	if (choice == "1") {
+	switch (menu.getIndexChoice()) {
+	case 0:
+		system("cls");
 		std::cout << "Enter tape: ";
 		std::cin >> choice;
 		tape.initializeTape(choice);
 		std::cout << std::endl;
-	}
-	else {
-		std::cout << "Okay we will use the tape from the machine you loaded!\n";
 		return;
 	}
+	system("cls");
+	std::cout << "Okay we will use the tape from the machine you loaded!\n";
+	system("pause");
+	return;
 }
 
 bool SingleTapeTM::isSingleTapeMachine() const {
-	return false;
+	return true;
 }
 
 void SingleTapeTM::toSingleTape() {}

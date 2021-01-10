@@ -2,6 +2,7 @@
 #include <string>
 #include <map>
 #include "Tape.h"
+#include "Menu.h"
 #include "Transition.h"
 #include <cassert>
 #include <filesystem>
@@ -16,7 +17,6 @@ protected:
 	void saveInstructions(std::ofstream&);
 	void loadInstructions(std::ifstream&);
 	void printFinalState() const;
-	void printUsersChoices() const;
 	void giveUniqueID(std::string&);
 
 	const std::string getPathToWantedLoad();

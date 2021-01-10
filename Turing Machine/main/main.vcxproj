@@ -153,6 +153,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Menu.cpp" />
     <ClCompile Include="MultitapeTM.cpp" />
     <ClCompile Include="SingleTapeTM.cpp" />
     <ClCompile Include="Tape.cpp" />
@@ -162,6 +163,7 @@
   <ItemGroup>
     <ClInclude Include="DLList.h" />
     <ClInclude Include="doctest.h" />
+    <ClInclude Include="Menu.h" />
     <ClInclude Include="MultitapeTM.h" />
     <ClInclude Include="SingleTapeTM.h" />
     <ClInclude Include="Tape.h" />
